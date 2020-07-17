@@ -2,7 +2,10 @@ package com.bridgelabz.parkinglot.test;
 
 public class ParkingLotOwner {
 
-    public Boolean getFlight(boolean parkingStatus) {
-        return null;
+    private Boolean parkingStatus;
+
+    public Boolean getFlight(Boolean parkingStatus) {
+        this.parkingStatus = parkingStatus;
+        return parkingStatus;
     }
 }
