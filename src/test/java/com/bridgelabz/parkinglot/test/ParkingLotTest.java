@@ -7,9 +7,16 @@ import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.ParkingLot;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ParkingLotTest {
+    ParkingLot parkingLot = null;
+    @Before
+    public void setUp(){
+        parkingLot = new ParkingLot();
+    }
+
     @Test
     public void welcomeTestCase() {
         System.out.println("Welcome To Parking Lot Problem");
@@ -104,8 +111,8 @@ public class ParkingLotTest {
             Driver driver3 = new Driver(bmw);
             int slotId3 = 102;
             ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
-            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
+            boolean checkFullSign = parkingLot.checkLot(lotSpace);
             Assert.assertTrue(checkFullSign);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -130,8 +137,8 @@ public class ParkingLotTest {
             Driver driver3 = new Driver(bmw);
             int slotId3 = 102;
             ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
-            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
+            boolean checkFullSign = parkingLot.checkLot(lotSpace);
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Full, So Redirect Security", redirectMessage);
@@ -153,8 +160,8 @@ public class ParkingLotTest {
             Driver driver2 = new Driver(xuv);
             int slotId2 = 102;
             ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2);
-            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2);
+            boolean checkFullSign = parkingLot.checkLot(lotSpace);
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Not Full", redirectMessage);
@@ -181,9 +188,8 @@ public class ParkingLotTest {
             Driver driver3 = new Driver(bmw);
             int slotId3 = 102;
             ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
-            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
-            String takeFullSign = new ParkingLot().freeSpace(lotSpace);
+            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
+            String takeFullSign = parkingLot.freeSpace(lotSpace);
             Assert.assertEquals("Take Full Sign", takeFullSign);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
