@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglot.test;
 
+import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.Car;
 import com.bridgelabz.parkinglot.model.Driver;
 import com.bridgelabz.parkinglot.service.ParkingLot;
@@ -55,28 +56,32 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotOwner_WhenLotFull_SoThatOwnerCanPutFullSign() {
-        Integer carId1 = 1001;
-        Car alto = new Car(carId1);
-        Driver driver1 = new Driver(alto);
-        int slotId1 = 101;
-        ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-        Integer carId2 = 1001;
-        Car xuv = new Car(carId2);
-        Driver driver2 = new Driver(xuv);
-        int slotId2 = 102;
-        ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-        Integer carId3 = 1001;
-        Car bmw = new Car(carId3);
-        Driver driver3 = new Driver(bmw);
-        int slotId3 = 102;
-        ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-        Integer carId4 = 1001;
-        Car jaguar = new Car(carId4);
-        Driver driver4 = new Driver(jaguar);
-        int slotId4 = 102;
-        ParkingLot parkingLot4 = new ParkingLot(driver4, slotId4);
-        ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3, parkingLot4);
-        boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
-        Assert.assertTrue(checkFullSign);
+        try {
+            Integer carId1 = 1001;
+            Car alto = new Car(carId1);
+            Driver driver1 = new Driver(alto);
+            int slotId1 = 101;
+            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
+            Integer carId2 = 1001;
+            Car xuv = new Car(carId2);
+            Driver driver2 = new Driver(xuv);
+            int slotId2 = 102;
+            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
+            Integer carId3 = 1001;
+            Car bmw = new Car(carId3);
+            Driver driver3 = new Driver(bmw);
+            int slotId3 = 102;
+            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
+            Integer carId4 = 1001;
+            Car jaguar = new Car(carId4);
+            Driver driver4 = new Driver(jaguar);
+            int slotId4 = 102;
+            ParkingLot parkingLot4 = new ParkingLot(driver4, slotId4);
+            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3, parkingLot4);
+            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            Assert.assertTrue(checkFullSign);
+        } catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
