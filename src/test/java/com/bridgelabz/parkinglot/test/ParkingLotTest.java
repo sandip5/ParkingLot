@@ -18,7 +18,7 @@ public class ParkingLotTest {
         Integer carId = 1001;
         Car car = new Car(carId);
         Driver driver = new Driver(car);
-        Integer slotId = 101;
+        int slotId = 101;
         ParkingLot parkingLot = new ParkingLot(driver, slotId);
         boolean parkingStatus = parkingLot.isPark(parkingLot);
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
@@ -31,7 +31,7 @@ public class ParkingLotTest {
         Integer carId = null;
         Car car = new Car(carId);
         Driver driver = new Driver(car);
-        Integer slotId = 101;
+        int slotId = 101;
         ParkingLot parkingLot = new ParkingLot(driver, slotId);
         boolean parkingStatus = parkingLot.isPark(parkingLot);
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
@@ -44,11 +44,11 @@ public class ParkingLotTest {
         Integer carId = 1001;
         Car car = new Car(carId);
         Driver driver = new Driver(car);
-        Integer slotId = 101;
+        int slotId = 101;
         ParkingLot parkingLot = new ParkingLot(driver, slotId);
         boolean parkingStatus = parkingLot.isPark(parkingLot);
         Assert.assertTrue(parkingStatus);
-        ParkingLot unParkParkingLot = driver.unPark(parkingLot);
+        ParkingLot unParkParkingLot = driver.unPark();
         Boolean parkingStatusAtUnParkTime = driver.goHome(unParkParkingLot);
         Assert.assertTrue(parkingStatusAtUnParkTime);
     }

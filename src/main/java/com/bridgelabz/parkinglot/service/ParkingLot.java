@@ -15,8 +15,6 @@ public class ParkingLot {
 
     public Boolean isPark(ParkingLot parkingLot) {
         this.parkingLot = parkingLot;
-        if(parkingLot.driver.car.carId == null)
-            return false;
-        return true;
+        return parkingLot.driver.car.carId != null;
     }
 }

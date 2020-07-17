@@ -10,13 +10,11 @@ public class Driver {
         this.car = car;
     }
 
-    public ParkingLot unPark(ParkingLot parkingLot) {
+    public ParkingLot unPark() {
         return null;
     }
 
     public Boolean goHome(ParkingLot unParkParkingLot) {
-        if (unParkParkingLot == null)
-            return true;
-        return false;
+        return unParkParkingLot == null;
     }
 }
