@@ -3,6 +3,8 @@ package com.bridgelabz.parkinglot.service;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.Driver;
 
+import java.util.stream.IntStream;
+
 public class ParkingLot {
 
     public ParkingLot parkingLotStore;
@@ -13,10 +15,6 @@ public class ParkingLot {
     public ParkingLot(Driver driver, int slotId) {
         this.driver = driver;
         this.slotId = slotId;
-    }
-
-    public ParkingLot(ParkingLot parkingLots) {
-        this.parkingLotStore = parkingLots;
     }
 
     public ParkingLot() {
@@ -32,20 +30,15 @@ public class ParkingLot {
         try {
             int parkLotSize = 3;
             ParkingLot[] lotSpace = new ParkingLot[parkLotSize];
-            lotSpace[0] = new ParkingLot(parking[0]);
-            lotSpace[1] = new ParkingLot(parking[1]);
-            lotSpace[2] = new ParkingLot(parking[2]);
-            lotSpace[3] = new ParkingLot(parking[3]);
+            IntStream.rangeClosed(0, parking.length - 1).forEach(index -> lotSpace[index] = parking[index]);
             return lotSpace;
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ParkingLotException("Lot Full So No More Can Park",
+            throw new ParkingLotException("Lot Full So No More Car Park",
                     ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED);
         }
     }
 
-    public boolean checkLot(ParkingLot[] lotSpace) {
-        if(lotSpace.length == 4)
-            return true;
-        return false;
+    public boolean checkLot(ParkingLot[] lotSpace) throws ParkingLotException {
+        return lotSpace.length == fillLot().length;
     }
 }
