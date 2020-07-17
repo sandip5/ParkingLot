@@ -162,4 +162,31 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void givenParkingLotOwner_WhenLotHasSpaceAgain_SoThatOwnerCanTakeFullSign() {
+        try {
+            Integer carId1 = 1001;
+            Car alto = new Car(carId1);
+            Driver driver1 = new Driver(alto);
+            int slotId1 = 101;
+            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
+            Integer carId2 = 1001;
+            Car xuv = new Car(carId2);
+            Driver driver2 = new Driver(xuv);
+            int slotId2 = 102;
+            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
+            Integer carId3 = 1001;
+            Car bmw = new Car(carId3);
+            Driver driver3 = new Driver(bmw);
+            int slotId3 = 102;
+            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
+            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
+            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            String takeFullSign = new ParkingLot().freeSpace(lotSpace);
+            Assert.assertEquals("Take Full Sign", takeFullSign);
+        } catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+        }
+    }
 }

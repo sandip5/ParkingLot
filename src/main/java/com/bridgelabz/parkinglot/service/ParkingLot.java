@@ -41,4 +41,9 @@ public class ParkingLot {
     public boolean checkLot(ParkingLot[] lotSpace) throws ParkingLotException {
         return IntStream.rangeClosed(0, lotSpace.length - 1).noneMatch(index -> lotSpace[index] == null);
     }
+
+    public String freeSpace(ParkingLot[] lotSpace) {
+        lotSpace[lotSpace.length - 1] = null;
+        return "Take Full Sign";
+    }
 }
