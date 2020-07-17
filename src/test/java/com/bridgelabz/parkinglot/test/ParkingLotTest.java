@@ -3,9 +3,9 @@ package com.bridgelabz.parkinglot.test;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.Car;
 import com.bridgelabz.parkinglot.model.Driver;
+import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.ParkingLot;
-import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -81,7 +81,7 @@ public class ParkingLotTest {
             ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3, parkingLot4);
             boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
             Assert.assertTrue(checkFullSign);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -107,7 +107,7 @@ public class ParkingLotTest {
             ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
             boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
             Assert.assertTrue(checkFullSign);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -135,7 +135,7 @@ public class ParkingLotTest {
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Full, So Redirect Security", redirectMessage);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -158,7 +158,7 @@ public class ParkingLotTest {
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Not Full", redirectMessage);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -185,7 +185,7 @@ public class ParkingLotTest {
             boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
             String takeFullSign = new ParkingLot().freeSpace(lotSpace);
             Assert.assertEquals("Take Full Sign", takeFullSign);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }

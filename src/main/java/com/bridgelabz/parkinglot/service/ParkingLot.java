@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 
 public class ParkingLot {
 
-    public ParkingLot parkingLotStore;
     public Integer slotId;
     public Driver driver;
     public ParkingLot parkingLot;
@@ -38,7 +37,7 @@ public class ParkingLot {
         }
     }
 
-    public boolean checkLot(ParkingLot[] lotSpace) throws ParkingLotException {
+    public boolean checkLot(ParkingLot[] lotSpace) {
         return IntStream.rangeClosed(0, lotSpace.length - 1).noneMatch(index -> lotSpace[index] == null);
     }
 
