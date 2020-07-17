@@ -15,7 +15,7 @@ public class ParkingLot {
 
     public Boolean isPark(ParkingLot parkingLot) {
         this.parkingLot = parkingLot;
-        if(parkingLot.slotId == null)
+        if(parkingLot.driver.car.carId == null)
             return false;
         return true;
     }

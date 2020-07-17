@@ -25,4 +25,17 @@ public class ParkingLotTest {
         Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
         Assert.assertTrue(catchFlight);
     }
+
+    @Test
+    public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkButDriverDidNotParked_SoTheyCanNotCatchTheirFlight() {
+        Integer carId = null;
+        Car car = new Car(carId);
+        Driver driver = new Driver(car);
+        Integer slotId = 101;
+        ParkingLot parkingLot = new ParkingLot(driver, slotId);
+        boolean parkingStatus = parkingLot.isPark(parkingLot);
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
+        Assert.assertFalse(catchFlight);
+    }
 }
