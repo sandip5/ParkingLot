@@ -3,8 +3,9 @@ package com.bridgelabz.parkinglot.test;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.Car;
 import com.bridgelabz.parkinglot.model.Driver;
+import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.ParkingLot;
-import com.bridgelabz.parkinglot.service.ParkingLotOwner;
+import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -106,6 +107,57 @@ public class ParkingLotTest {
             ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
             boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
             Assert.assertTrue(checkFullSign);
+        } catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenAirportSecurityPersonal_WhenLotFull_SoThatRedirectSecurityStaff() {
+        try {
+            Integer carId1 = 1001;
+            Car alto = new Car(carId1);
+            Driver driver1 = new Driver(alto);
+            int slotId1 = 101;
+            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
+            Integer carId2 = 1001;
+            Car xuv = new Car(carId2);
+            Driver driver2 = new Driver(xuv);
+            int slotId2 = 102;
+            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
+            Integer carId3 = 1001;
+            Car bmw = new Car(carId3);
+            Driver driver3 = new Driver(bmw);
+            int slotId3 = 102;
+            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
+            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3);
+            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            SecurityStaff security = new SecurityStaff();
+            String redirectMessage = security.redirect(checkFullSign);
+            Assert.assertEquals("Lot Is Full, So Redirect Security", redirectMessage);
+        } catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenAirportSecurityPersonal_WhenLotNotFull_SoThatNotRedirectSecurityStaff() {
+        try {
+            Integer carId1 = 1001;
+            Car alto = new Car(carId1);
+            Driver driver1 = new Driver(alto);
+            int slotId1 = 101;
+            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
+            Integer carId2 = 1001;
+            Car xuv = new Car(carId2);
+            Driver driver2 = new Driver(xuv);
+            int slotId2 = 102;
+            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
+            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2);
+            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
+            SecurityStaff security = new SecurityStaff();
+            String redirectMessage = security.redirect(checkFullSign);
+            Assert.assertEquals("Lot Is Not Full", redirectMessage);
         } catch (ParkingLotException e){
             System.out.println(e.getMessage());
         }

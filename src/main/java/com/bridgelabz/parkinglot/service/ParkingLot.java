@@ -11,6 +11,8 @@ public class ParkingLot {
     public Integer slotId;
     public Driver driver;
     public ParkingLot parkingLot;
+    public int parkLotSize = 3;
+    ParkingLot[] lotSize = new ParkingLot[parkLotSize];
 
     public ParkingLot(Driver driver, int slotId) {
         this.driver = driver;
@@ -28,10 +30,8 @@ public class ParkingLot {
 
     public ParkingLot[] fillLot(ParkingLot... parking) throws ParkingLotException {
         try {
-            int parkLotSize = 3;
-            ParkingLot[] lotSpace = new ParkingLot[parkLotSize];
-            IntStream.rangeClosed(0, parking.length - 1).forEach(index -> lotSpace[index] = parking[index]);
-            return lotSpace;
+            IntStream.rangeClosed(0, parking.length - 1).forEach(index -> lotSize[index] = parking[index]);
+            return lotSize;
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParkingLotException("Lot Full So No More Car Park",
                     ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED);
@@ -39,6 +39,6 @@ public class ParkingLot {
     }
 
     public boolean checkLot(ParkingLot[] lotSpace) throws ParkingLotException {
-        return lotSpace.length == fillLot().length;
+        return IntStream.rangeClosed(0, lotSpace.length - 1).noneMatch(index -> lotSpace[index] == null);
     }
 }
