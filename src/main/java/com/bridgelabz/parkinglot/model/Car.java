@@ -1,4 +1,4 @@
-package com.bridgelabz.parkinglot.test;
+package com.bridgelabz.parkinglot.model;
 
 public class Car {
     public Integer carId;

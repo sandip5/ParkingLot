@@ -1,4 +1,6 @@
-package com.bridgelabz.parkinglot.test;
+package com.bridgelabz.parkinglot.service;
+
+import com.bridgelabz.parkinglot.model.Driver;
 
 public class ParkingLot {
 

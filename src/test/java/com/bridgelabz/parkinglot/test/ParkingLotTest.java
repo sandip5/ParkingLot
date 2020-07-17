@@ -1,5 +1,9 @@
 package com.bridgelabz.parkinglot.test;
 
+import com.bridgelabz.parkinglot.model.Car;
+import com.bridgelabz.parkinglot.model.Driver;
+import com.bridgelabz.parkinglot.service.ParkingLot;
+import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import org.junit.Assert;
 import org.junit.Test;
 
