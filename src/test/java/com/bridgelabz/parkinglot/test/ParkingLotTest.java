@@ -195,4 +195,16 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+
+    @Test
+    public void givenParkingLotSystem_WhenEnterDuplicates_ShouldThrowException() throws ParkingLotException {
+        try {
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 11);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.DUPLICATE_ENTRY, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
 }

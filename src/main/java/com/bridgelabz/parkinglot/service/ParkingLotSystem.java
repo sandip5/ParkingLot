@@ -39,7 +39,9 @@ public class ParkingLotSystem {
                     if (parkingLot.size() > PARK_LOT_SIZE) {
                         throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED);
                     } else {
-                        if (parkingLot.containsKey(ticketNo) && parkingLot.containsValue(vehicle))
+                        if (parkingLot.containsKey(ticketNo))
+                            throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
+                        else if (parkingLot.containsValue(vehicle))
                             throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
                     }
                     parkingLot.put(ticketNo, vehicle);
