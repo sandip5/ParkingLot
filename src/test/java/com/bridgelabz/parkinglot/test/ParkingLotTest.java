@@ -231,4 +231,29 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void givenParkingLotSystem_WhenEnterWrongDetailsInIsPark_ShouldThrowException() {
+        try {
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.isPark(12);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_VEHICLE, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenUnParkAndNoVehicleLeft_ShouldThrowException(){
+        try {
+            parkingLotSystem.park(1001, 101);
+            boolean isParked = parkingLotSystem.isPark(101);
+            Assert.assertTrue(isParked);
+            parkingLotSystem.unPark(1001);
+            boolean isUnParked = parkingLotSystem.isUnPark(101);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
 }
