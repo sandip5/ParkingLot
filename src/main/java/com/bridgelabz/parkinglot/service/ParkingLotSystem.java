@@ -45,7 +45,6 @@ public class ParkingLotSystem {
                     parkingLot.put(ticketNo, vehicle);
                     parkedVehicleHistory.add(vehicle);
                 }
-                System.out.println(parkingLot);
             }
         } catch (NullPointerException e) {
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);

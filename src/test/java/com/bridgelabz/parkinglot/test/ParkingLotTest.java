@@ -11,10 +11,20 @@ import org.junit.Test;
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
 
 public class ParkingLotTest {
+
+    ParkingLotSystem parkingLotSystem = null;
+    @Before
+    public void setUp(){
+        parkingLotSystem = new ParkingLotSystem();
+    }
+    @Test
+    public void welcomeTestCase() {
+        System.out.println("Welcome To Parking Lot Problem");
+    }
+
     @Test
     public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkTheirCar_SoTheyCanCatchTheirFlight()
             throws ParkingLotException {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
         parkingLotSystem.park(1001, 101);
         boolean parkingStatus = parkingLotSystem.isPark(101);
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
@@ -25,7 +35,6 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkButDriverDidNotParked_SoTheyCanNotCatchTheirFlight() {
         try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             boolean parkingStatus = parkingLotSystem.isPark();
             ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
             Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
@@ -38,7 +47,6 @@ public class ParkingLotTest {
     @Test
     public void givenDriver_WhenUnParkCar_SoThatCanGoHome() throws ParkingLotException {
         try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             parkingLotSystem.park(1001, 101);
             parkingLotSystem.park(1002, 102);
             boolean isParked = parkingLotSystem.isPark(101);
@@ -56,7 +64,6 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotOwner_WhenLotFull_SoThatOwnerCanPutFullSign() {
         try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
@@ -70,8 +77,6 @@ public class ParkingLotTest {
     @Test
     public void givenAirportSecurityPersonal_WhenLotFull_SoThatRedirectSecurityStaff() {
         try {
-
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
@@ -87,8 +92,6 @@ public class ParkingLotTest {
     @Test
     public void givenAirportSecurityPersonal_WhenLotNotFull_SoThatNotRedirectSecurityStaff() {
         try {
-
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             boolean checkFullSign = parkingLotSystem.checkLot(PARK_LOT_SIZE);
@@ -103,7 +106,6 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotOwner_WhenLotHasSpaceAgain_SoThatOwnerCanTakeFullSign() {
         try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
