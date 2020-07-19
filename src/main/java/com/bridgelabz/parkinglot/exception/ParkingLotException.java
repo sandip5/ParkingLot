@@ -2,7 +2,14 @@ package com.bridgelabz.parkinglot.exception;
 
 public class ParkingLotException extends Throwable {
     public enum ExceptionType {
-        LOT_SIZE_EXCEEDED
+        LOT_SIZE_EXCEEDED,
+        DUPLICATE_ENTRY,
+        UN_PARKED,
+        NO_VEHICLE,
+        NULL_VALUE,
+        ZERO_VALUE,
+        EMPTY_PARKING_LOT,
+        ENTER_INPUT
     }
 
     public ExceptionType type;

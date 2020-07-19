@@ -1,35 +1,22 @@
 package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
-import com.bridgelabz.parkinglot.model.Car;
-import com.bridgelabz.parkinglot.model.Driver;
 import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
-import com.bridgelabz.parkinglot.service.ParkingLot;
+import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
+
 public class ParkingLotTest {
-    ParkingLot parkingLot = null;
-    @Before
-    public void setUp(){
-        parkingLot = new ParkingLot();
-    }
-
     @Test
-    public void welcomeTestCase() {
-        System.out.println("Welcome To Parking Lot Problem");
-    }
-
-    @Test
-    public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkTheirCar_SoTheyCanCatchTheirFlight() {
-        Integer carId = 1001;
-        Car car = new Car(carId);
-        Driver driver = new Driver(car);
-        int slotId = 101;
-        ParkingLot parkingLot = new ParkingLot(driver, slotId);
-        boolean parkingStatus = parkingLot.isPark(parkingLot);
+    public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkTheirCar_SoTheyCanCatchTheirFlight()
+            throws ParkingLotException {
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+        parkingLotSystem.park(1001, 101);
+        boolean parkingStatus = parkingLotSystem.isPark(101);
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
         Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
         Assert.assertTrue(catchFlight);
@@ -37,84 +24,45 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkButDriverDidNotParked_SoTheyCanNotCatchTheirFlight() {
-        Integer carId = null;
-        Car car = new Car(carId);
-        Driver driver = new Driver(car);
-        int slotId = 101;
-        ParkingLot parkingLot = new ParkingLot(driver, slotId);
-        boolean parkingStatus = parkingLot.isPark(parkingLot);
-        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-        Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
-        Assert.assertFalse(catchFlight);
-    }
-
-    @Test
-    public void givenDriver_WhenUnParkCar_SoThatCanGoHome() {
-        Integer carId = 1001;
-        Car car = new Car(carId);
-        Driver driver = new Driver(car);
-        int slotId = 101;
-        ParkingLot parkingLot = new ParkingLot(driver, slotId);
-        boolean parkingStatus = parkingLot.isPark(parkingLot);
-        Assert.assertTrue(parkingStatus);
-        ParkingLot unParkParkingLot = driver.unPark();
-        Boolean parkingStatusAtUnParkTime = driver.goHome(unParkParkingLot);
-        Assert.assertTrue(parkingStatusAtUnParkTime);
-    }
-
-    @Test
-    public void givenParkingLotOwner_WhenLotFullAndTryToAddMoreCar_ShouldThrowException() {
         try {
-            Integer carId1 = 1001;
-            Car alto = new Car(carId1);
-            Driver driver1 = new Driver(alto);
-            int slotId1 = 101;
-            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-            Integer carId2 = 1001;
-            Car xuv = new Car(carId2);
-            Driver driver2 = new Driver(xuv);
-            int slotId2 = 102;
-            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            Integer carId3 = 1001;
-            Car bmw = new Car(carId3);
-            Driver driver3 = new Driver(bmw);
-            int slotId3 = 102;
-            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            Integer carId4 = 1001;
-            Car jaguar = new Car(carId4);
-            Driver driver4 = new Driver(jaguar);
-            int slotId4 = 102;
-            ParkingLot parkingLot4 = new ParkingLot(driver4, slotId4);
-            ParkingLot[] lotSpace = new ParkingLot().fillLot(parkingLot1, parkingLot2, parkingLot3, parkingLot4);
-            boolean checkFullSign = new ParkingLot().checkLot(lotSpace);
-            Assert.assertTrue(checkFullSign);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            boolean parkingStatus = parkingLotSystem.isPark();
+            ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+            Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
         } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.ENTER_INPUT, e.type);
             System.out.println(e.getMessage());
         }
     }
 
     @Test
+    public void givenDriver_WhenUnParkCar_SoThatCanGoHome() throws ParkingLotException {
+        try {
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            parkingLotSystem.park(1001, 101);
+            parkingLotSystem.park(1002, 102);
+            boolean isParked = parkingLotSystem.isPark(101);
+            Assert.assertTrue(isParked);
+            parkingLotSystem.unPark(1001);
+            boolean isUnParked = parkingLotSystem.isUnPark(101);
+            Assert.assertFalse(isUnParked);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    @Test
     public void givenParkingLotOwner_WhenLotFull_SoThatOwnerCanPutFullSign() {
         try {
-            Integer carId1 = 1001;
-            Car alto = new Car(carId1);
-            Driver driver1 = new Driver(alto);
-            int slotId1 = 101;
-            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-            Integer carId2 = 1001;
-            Car xuv = new Car(carId2);
-            Driver driver2 = new Driver(xuv);
-            int slotId2 = 102;
-            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            Integer carId3 = 1001;
-            Car bmw = new Car(carId3);
-            Driver driver3 = new Driver(bmw);
-            int slotId3 = 102;
-            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
-            boolean checkFullSign = parkingLot.checkLot(lotSpace);
-            Assert.assertTrue(checkFullSign);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            parkingLotSystem.park(4, 14);
         } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED, e.type);
             System.out.println(e.getMessage());
         }
     }
@@ -122,23 +70,12 @@ public class ParkingLotTest {
     @Test
     public void givenAirportSecurityPersonal_WhenLotFull_SoThatRedirectSecurityStaff() {
         try {
-            Integer carId1 = 1001;
-            Car alto = new Car(carId1);
-            Driver driver1 = new Driver(alto);
-            int slotId1 = 101;
-            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-            Integer carId2 = 1001;
-            Car xuv = new Car(carId2);
-            Driver driver2 = new Driver(xuv);
-            int slotId2 = 102;
-            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            Integer carId3 = 1001;
-            Car bmw = new Car(carId3);
-            Driver driver3 = new Driver(bmw);
-            int slotId3 = 102;
-            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
-            boolean checkFullSign = parkingLot.checkLot(lotSpace);
+
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            boolean checkFullSign = parkingLotSystem.checkLot(PARK_LOT_SIZE);
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Full, So Redirect Security", redirectMessage);
@@ -150,18 +87,11 @@ public class ParkingLotTest {
     @Test
     public void givenAirportSecurityPersonal_WhenLotNotFull_SoThatNotRedirectSecurityStaff() {
         try {
-            Integer carId1 = 1001;
-            Car alto = new Car(carId1);
-            Driver driver1 = new Driver(alto);
-            int slotId1 = 101;
-            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-            Integer carId2 = 1001;
-            Car xuv = new Car(carId2);
-            Driver driver2 = new Driver(xuv);
-            int slotId2 = 102;
-            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2);
-            boolean checkFullSign = parkingLot.checkLot(lotSpace);
+
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            boolean checkFullSign = parkingLotSystem.checkLot(PARK_LOT_SIZE);
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);
             Assert.assertEquals("Lot Is Not Full", redirectMessage);
@@ -173,23 +103,12 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotOwner_WhenLotHasSpaceAgain_SoThatOwnerCanTakeFullSign() {
         try {
-            Integer carId1 = 1001;
-            Car alto = new Car(carId1);
-            Driver driver1 = new Driver(alto);
-            int slotId1 = 101;
-            ParkingLot parkingLot1 = new ParkingLot(driver1, slotId1);
-            Integer carId2 = 1001;
-            Car xuv = new Car(carId2);
-            Driver driver2 = new Driver(xuv);
-            int slotId2 = 102;
-            ParkingLot parkingLot2 = new ParkingLot(driver2, slotId2);
-            Integer carId3 = 1001;
-            Car bmw = new Car(carId3);
-            Driver driver3 = new Driver(bmw);
-            int slotId3 = 102;
-            ParkingLot parkingLot3 = new ParkingLot(driver3, slotId3);
-            ParkingLot[] lotSpace = parkingLot.fillLot(parkingLot1, parkingLot2, parkingLot3);
-            String takeFullSign = parkingLot.freeSpace(lotSpace);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            parkingLotSystem.unPark(3);
+            String takeFullSign = new ParkingLotSystem().freeSpace(PARK_LOT_SIZE);
             Assert.assertEquals("Take Full Sign", takeFullSign);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
