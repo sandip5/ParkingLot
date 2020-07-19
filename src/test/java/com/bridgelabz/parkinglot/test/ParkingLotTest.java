@@ -39,17 +39,4 @@ public class ParkingLotTest {
         Assert.assertFalse(catchFlight);
     }
 
-    @Test
-    public void givenDriver_WhenUnParkCar_SoThatCanGoHome() {
-        Integer carId = 1001;
-        Car car = new Car(carId);
-        Driver driver = new Driver(car);
-        int slotId = 101;
-        ParkingLot parkingLot = new ParkingLot(driver, slotId);
-        boolean parkingStatus = parkingLot.isPark(parkingLot);
-        Assert.assertTrue(parkingStatus);
-        ParkingLot unParkParkingLot = driver.unPark();
-        Boolean parkingStatusAtUnParkTime = driver.goHome(unParkParkingLot);
-        Assert.assertTrue(parkingStatusAtUnParkTime);
-    }
 }
