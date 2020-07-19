@@ -161,4 +161,15 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+
+    @Test
+    public void givenParkingLotSystem_WhenVehicleAndTicketHaveNul_ShouldThrowException() {
+        try {
+            parkingLotSystem.park(0, 0);
+        }catch (ParkingLotException e){
+            Assert.assertEquals(ParkingLotException.ExceptionType.NULL_VALUE, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
 }
