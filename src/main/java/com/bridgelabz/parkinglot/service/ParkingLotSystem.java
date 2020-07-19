@@ -33,7 +33,7 @@ public class ParkingLotSystem {
                 throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
             } else {
                 Object NOT_ALLOWED = 0;
-                if (vehicle == NOT_ALLOWED) {
+                if (ticketNo == NOT_ALLOWED || vehicle == NOT_ALLOWED) {
                     throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
                 } else {
                     if (parkingLot.size() > PARK_LOT_SIZE) {

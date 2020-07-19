@@ -1,7 +1,6 @@
 package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
-import com.bridgelabz.parkinglot.model.ParkingLotOwner;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
@@ -27,17 +26,13 @@ public class ParkingLotTest {
             throws ParkingLotException {
         parkingLotSystem.park(1001, 101);
         boolean parkingStatus = parkingLotSystem.isPark(101);
-        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-        Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
-        Assert.assertTrue(catchFlight);
+        Assert.assertTrue(parkingStatus);
     }
 
     @Test
     public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkButDriverDidNotParked_SoTheyCanNotCatchTheirFlight() {
         try {
-            boolean parkingStatus = parkingLotSystem.isPark();
-            ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-            Boolean catchFlight = parkingLotOwner.getFlight(parkingStatus);
+            parkingLotSystem.isPark();
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.ENTER_INPUT, e.type);
             System.out.println(e.getMessage());
@@ -115,5 +110,12 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenTicketNumberZero_ShouldThrowException() throws ParkingLotException {
+        parkingLotSystem.park(0, 101);
+        boolean parkingStatus = parkingLotSystem.isPark(101);
+        Assert.assertTrue(parkingStatus);
     }
 }
