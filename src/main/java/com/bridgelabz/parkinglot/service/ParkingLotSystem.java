@@ -5,6 +5,7 @@ import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;

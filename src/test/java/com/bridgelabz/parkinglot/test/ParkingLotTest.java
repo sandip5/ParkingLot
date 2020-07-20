@@ -2,6 +2,7 @@ package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
+import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public class ParkingLotTest {
 
 
     @Test
-    public void givenParkingLotSystem_WhenLotFull_SoThatOwnerCanPutFullSign() {
+    public void givenParkingLotSystem_WhenLotFull_ShouldThrowException() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
@@ -66,6 +67,20 @@ public class ParkingLotTest {
             parkingLotSystem.park(4, 14);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_FULL, e.type);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenLotFull_SoThatOwnerCanPutFullSign() {
+        try {
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+            String parkingLotStatus = parkingLotOwner.getStatus(PARK_LOT_SIZE, parkingLotSystem);
+            Assert.assertEquals("Parking Lot Full", parkingLotStatus);
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
