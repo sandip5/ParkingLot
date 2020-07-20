@@ -24,7 +24,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkTheirCar_SoTheyCanCatchTheirFlight()
+    public void givenParkingLotSystem_WhenDriverParkedCar_ShouldReturnParkingStatusTrue()
             throws ParkingLotException {
         parkingLotSystem.park(1001, 101);
         boolean parkingStatus = parkingLotSystem.isPark(101);
@@ -32,7 +32,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotOwner_WhenOwnerWantDriverAbleToParkButDriverDidNotParked_SoTheyCanNotCatchTheirFlight() {
+    public void givenParkingLotSystem_WhenDriverDidNotParkedAndParkingAskedThatParkedOrNot_ShouldThrowException() {
         try {
             parkingLotSystem.isPark();
         } catch (ParkingLotException e) {
@@ -42,7 +42,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenDriver_WhenUnParkCar_SoThatCanGoHome() {
+    public void givenParkingLotSystem_WhenUnParkCar_ShouldReturnFalse() {
         try {
             parkingLotSystem.park(1001, 101);
             parkingLotSystem.park(1002, 102);
@@ -52,27 +52,26 @@ public class ParkingLotTest {
             boolean isUnParked = parkingLotSystem.isUnPark(101);
             Assert.assertFalse(isUnParked);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
             System.out.println(e.getMessage());
         }
     }
 
 
     @Test
-    public void givenParkingLotOwner_WhenLotFull_SoThatOwnerCanPutFullSign() {
+    public void givenParkingLotSystem_WhenLotFull_SoThatOwnerCanPutFullSign() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
             parkingLotSystem.park(4, 14);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED, e.type);
+            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_FULL, e.type);
             System.out.println(e.getMessage());
         }
     }
 
     @Test
-    public void givenAirportSecurityPersonal_WhenLotFull_SoThatRedirectSecurityStaff() {
+    public void givenParkingLotSystem_WhenLotFull_SoThatRedirectSecurityStaff() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
@@ -87,7 +86,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenAirportSecurityPersonal_WhenLotNotFull_SoThatNotRedirectSecurityStaff() {
+    public void givenParkingLotSystem_WhenLotNotFull_SoThatNotRedirectSecurityStaff() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
@@ -101,7 +100,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotOwner_WhenLotHasSpaceAgain_SoThatOwnerCanTakeFullSign() {
+    public void givenParkingLotSystem_WhenLotHasSpaceAgain_SoThatOwnerCanTakeFullSign() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);

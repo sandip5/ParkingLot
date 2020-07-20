@@ -32,7 +32,7 @@ public class ParkingLotSystem {
             if (ticketNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
                 throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
             if (parkingLot.size() > PARK_LOT_SIZE)
-                throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_EXCEEDED);
+                throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
             if (parkingLot.containsKey(ticketNo) || parkingLot.containsValue(vehicle))
                 throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
             parkingLot.put(ticketNo, vehicle);
@@ -60,7 +60,8 @@ public class ParkingLotSystem {
 
     public boolean isUnPark(Object vehicle) throws ParkingLotException {
         if (parkingLot.isEmpty())
-            throw new ParkingLotException("Empty Parking Lot, Un-parked", ParkingLotException.ExceptionType.EMPTY_PARKING_LOT);
+            throw new ParkingLotException("Empty Parking Lot, Un-parked",
+                    ParkingLotException.ExceptionType.EMPTY_PARKING_LOT);
         return isPark(vehicle);
     }
 }
