@@ -25,7 +25,6 @@ public class ParkingLotSystem {
     }
 
     public void park(Integer ticketNo, Object vehicle) throws ParkingLotException {
-        try {
             if (ticketNo == null || vehicle == null)
                 throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
             Object NOT_ALLOWED = 0;
@@ -37,9 +36,6 @@ public class ParkingLotSystem {
                 throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
             parkingLot.put(ticketNo, vehicle);
             parkedVehicleHistory.add(vehicle);
-        } catch (NullPointerException e) {
-            throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
-        }
     }
 
     public boolean isPark(Object vehicle) throws ParkingLotException {
