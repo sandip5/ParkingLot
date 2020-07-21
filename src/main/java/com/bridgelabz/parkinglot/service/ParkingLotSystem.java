@@ -11,6 +11,15 @@ public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
     public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
     public final List<Object> parkedVehicleHistory = new ArrayList<>();
+    private int slotNo;
+
+    public ParkingLotSystem(int slots) {
+        for (int slotNo = 1; slotNo <= slots; slotNo++) {
+            parkingLot.put(slotNo, " ");
+        }
+    }
+
+    public ParkingLotSystem() { }
 
     public boolean checkLot(int lotSpace) {
         return parkingLot.size() == lotSpace + 1;
@@ -20,17 +29,15 @@ public class ParkingLotSystem {
         return parkingLot.size() < lotSpace + 1 ? "Take Full Sign" : "Parking Lot Still Full";
     }
 
-    public void park(Integer ticketNo, Object vehicle) throws ParkingLotException {
-        if (ticketNo == null || vehicle == null)
+    public void park(Integer slotNo, Object vehicle) throws ParkingLotException {
+        if (slotNo == null || vehicle == null)
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
         Object NOT_ALLOWED = 0;
-        if (ticketNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
+        if (slotNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
-        if (parkingLot.size() > PARK_LOT_SIZE)
+        if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
-        if (parkingLot.containsKey(ticketNo) || parkingLot.containsValue(vehicle))
-            throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
-        parkingLot.put(ticketNo, vehicle);
+        parkingLot.put(slotNo, vehicle);
         parkedVehicleHistory.add(vehicle);
     }
 
@@ -44,8 +51,8 @@ public class ParkingLotSystem {
         throw new ParkingLotException("Not Given Any Input", ParkingLotException.ExceptionType.ENTER_INPUT);
     }
 
-    public void unPark(Integer ticketNo) {
-        parkingLot.remove(ticketNo);
+    public void unPark(Integer slotNo) {
+        parkingLot.put(slotNo, " ");
     }
 
     public boolean isUnPark(Object vehicle) throws ParkingLotException {
@@ -53,5 +60,13 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Empty Parking Lot, Un-parked",
                     ParkingLotException.ExceptionType.EMPTY_PARKING_LOT);
         return isPark(vehicle);
+    }
+
+    public static <K, V> K getKey(Map<K, V> map, V value) {
+        return map.keySet().stream().filter(key -> value.equals(map.get(key))).findFirst().orElse(null);
+    }
+
+    public int getVacantSlot() {
+        return getKey(parkingLot, " ");
     }
 }

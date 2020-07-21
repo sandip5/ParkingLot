@@ -2,6 +2,7 @@ package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
+import com.bridgelabz.parkinglot.service.Attendant;
 import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
@@ -270,5 +271,24 @@ public class ParkingLotTest {
             Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenParkingAttendantParkCar_ShouldMakeDecisionWhereToParkCar() {
+        try{
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
+            Attendant attendant = new Attendant();
+            int slotNo = attendant.whereToPark(parkingLotSystem);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 11);
+            int slotNo1 = attendant.whereToPark(parkingLotSystem);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
+            parkingLotSystem.unPark(slotNo1);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 15);
+            Assert.assertEquals(1, slotNo);
+        } catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }
