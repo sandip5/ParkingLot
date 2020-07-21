@@ -274,7 +274,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenParkingAttendantParkCar_ShouldMakeDecisionWhereToParkCar() {
+    public void givenParkingLotSystem_WhenParkingAttendantParkCar_ShouldAskOwnerWhereToParkCar() {
         try{
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
@@ -289,6 +289,18 @@ public class ParkingLotTest {
         } catch (ParkingLotException e){
             System.out.println(e.getMessage());
         }
+    }
 
+    @Test
+    public void givenParkingLotSystem_WhenFindVehicleUsingVehicleDetails_ShouldReturnOfVehicleSlot() {
+        try {
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            int slotNo = parkingLotSystem.findVehicle(12);
+            Assert.assertEquals(2, slotNo);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

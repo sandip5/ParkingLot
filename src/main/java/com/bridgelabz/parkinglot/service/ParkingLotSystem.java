@@ -69,4 +69,9 @@ public class ParkingLotSystem {
     public int getVacantSlot() {
         return getKey(parkingLot, " ");
     }
+
+    public int findVehicle(Object vehicle) {
+        return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
+    }
+
 }
