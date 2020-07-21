@@ -10,7 +10,7 @@ import java.util.Map;
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
     public int PER_HOUR_CHARGE = 10;
-    public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
+    public final LinkedHashMap<Object, Object> parkingLot = new LinkedHashMap<>();
     public final List<Object> parkedVehicleHistory = new ArrayList<>();
 
     public ParkingLotSystem(int slots) {
@@ -19,7 +19,8 @@ public class ParkingLotSystem {
         }
     }
 
-    public ParkingLotSystem() { }
+    public ParkingLotSystem() {
+    }
 
     public boolean checkLot(int lotSpace) {
         return parkingLot.size() == lotSpace + 1;
@@ -29,12 +30,14 @@ public class ParkingLotSystem {
         return parkingLot.size() < lotSpace + 1 ? "Take Full Sign" : "Parking Lot Still Full";
     }
 
-    public void park(Integer slotNo, Object vehicle) throws ParkingLotException {
+    public void park(Object slotNo, Object vehicle) throws ParkingLotException {
         if (slotNo == null || vehicle == null)
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
         Object NOT_ALLOWED = 0;
         if (slotNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
+        if (parkingLot.containsValue(vehicle))
+            throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
         if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         parkingLot.put(slotNo, vehicle);
@@ -51,7 +54,7 @@ public class ParkingLotSystem {
         throw new ParkingLotException("Not Given Any Input", ParkingLotException.ExceptionType.ENTER_INPUT);
     }
 
-    public void unPark(Integer slotNo) {
+    public void unPark(Object slotNo) {
         parkingLot.put(slotNo, " ");
     }
 
@@ -66,16 +69,21 @@ public class ParkingLotSystem {
         return map.keySet().stream().filter(key -> value.equals(map.get(key))).findFirst().orElse(null);
     }
 
-    public int getVacantSlot() {
+    public Object getVacantSlot() {
         return getKey(parkingLot, " ");
     }
 
-    public int findVehicle(Object vehicle) {
+    public Object findVehicle(Object vehicle) {
         return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
     }
 
     public int unPark(Integer slotNo, int durationOfParking) {
         parkingLot.put(slotNo, " ");
         return PER_HOUR_CHARGE * durationOfParking;
+    }
+
+    public void park(Object vehicle) throws ParkingLotException {
+        Object slotNo = getVacantSlot();
+        park(slotNo, vehicle);
     }
 }

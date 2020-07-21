@@ -10,8 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Time;
-
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
 
 public class ParkingLotTest {
@@ -281,9 +279,9 @@ public class ParkingLotTest {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
-            int slotNo = attendant.whereToPark(parkingLotSystem);
+            Object slotNo = attendant.whereToPark(parkingLotSystem);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 11);
-            int slotNo1 = attendant.whereToPark(parkingLotSystem);
+            Object slotNo1 = attendant.whereToPark(parkingLotSystem);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
             parkingLotSystem.unPark(slotNo1);
@@ -300,7 +298,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
-            int slotNo = parkingLotSystem.findVehicle(12);
+            Object slotNo = parkingLotSystem.findVehicle(12);
             Assert.assertEquals(2, slotNo);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -318,6 +316,19 @@ public class ParkingLotTest {
             parkingLotSystem.park(3, vehicleThree);
             int charges = parkingLotSystem.unPark(3, vehicleThree.getDurationOfParking());
             Assert.assertEquals(60, charges);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenVehicle_WhenParkedInParkingLow_ShouldParkedEvenlyDistribution() {
+        try {
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
+            parkingLotSystem.park(1);
+            parkingLotSystem.park(2);
+            parkingLotSystem.park(3);
+            Assert.assertEquals(2, parkingLotSystem.findVehicle(2));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
