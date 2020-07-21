@@ -2,10 +2,7 @@ package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SecurityStaff;
-import com.bridgelabz.parkinglot.service.Attendant;
-import com.bridgelabz.parkinglot.service.ParkingLotOwner;
-import com.bridgelabz.parkinglot.service.ParkingLotSystem;
-import com.bridgelabz.parkinglot.service.VehicleDetails;
+import com.bridgelabz.parkinglot.service.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -279,13 +276,13 @@ public class ParkingLotTest {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
-            Object slotNo = attendant.whereToPark(parkingLotSystem);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 11);
-            Object slotNo1 = attendant.whereToPark(parkingLotSystem);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
+            Object slotNo = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 11);
+            Object slotNo1 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
             parkingLotSystem.unPark(slotNo1);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 15);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 15);
             Assert.assertEquals(1, slotNo);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -329,6 +326,24 @@ public class ParkingLotTest {
             parkingLotSystem.park(2);
             parkingLotSystem.park(3);
             Assert.assertEquals(2, parkingLotSystem.findVehicle(2));
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenHandicapDriver_WhenParkedVehicle_AttendantParkedVehicleNearestFreeSpace() {
+        try {
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
+            Attendant attendant = new Attendant();
+            Object slotNo = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 11);
+            Object slotNo1 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
+            parkingLotSystem.unPark(slotNo1);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.HANDICAPPED), 15);
+            Assert.assertEquals(1, slotNo);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
