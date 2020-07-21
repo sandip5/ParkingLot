@@ -12,8 +12,6 @@ public class ParkingLotSystem {
     public int PER_HOUR_CHARGE = 10;
     public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
     public final List<Object> parkedVehicleHistory = new ArrayList<>();
-    private int slotNo;
-    private VehicleDetails vehicleDetails;
 
     public ParkingLotSystem(int slots) {
         for (int slotNo = 1; slotNo <= slots; slotNo++) {

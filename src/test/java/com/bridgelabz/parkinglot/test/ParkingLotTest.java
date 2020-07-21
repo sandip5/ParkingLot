@@ -313,10 +313,10 @@ public class ParkingLotTest {
             VehicleDetails vehicleOne = new VehicleDetails(2);
             parkingLotSystem.park(1, vehicleOne);
             VehicleDetails vehicleTwo = new VehicleDetails(4);
-            parkingLotSystem.park(1, vehicleTwo);
+            parkingLotSystem.park(2, vehicleTwo);
             VehicleDetails vehicleThree = new VehicleDetails(6);
-            parkingLotSystem.park(1, vehicleThree);
-            int charges = parkingLotSystem.unPark(1, vehicleThree.getDurationOfParking());
+            parkingLotSystem.park(3, vehicleThree);
+            int charges = parkingLotSystem.unPark(3, vehicleThree.getDurationOfParking());
             Assert.assertEquals(60, charges);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
