@@ -9,9 +9,11 @@ import java.util.Map;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
+    public int PER_HOUR_CHARGE = 10;
     public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
     public final List<Object> parkedVehicleHistory = new ArrayList<>();
     private int slotNo;
+    private VehicleDetails vehicleDetails;
 
     public ParkingLotSystem(int slots) {
         for (int slotNo = 1; slotNo <= slots; slotNo++) {
@@ -74,4 +76,9 @@ public class ParkingLotSystem {
         return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
     }
 
+    public int unPark(Integer slotNo, VehicleDetails vehicle) {
+        parkingLot.put(slotNo, " ");
+//        int charges = PER_HOUR_CHARGE * vehicle.
+        return 0;
+    }
 }

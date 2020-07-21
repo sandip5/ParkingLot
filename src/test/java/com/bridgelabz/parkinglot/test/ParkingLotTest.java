@@ -5,9 +5,12 @@ import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.Attendant;
 import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
+import com.bridgelabz.parkinglot.service.VehicleDetails;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.sql.Time;
 
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
 
@@ -302,5 +305,19 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnChargeForParking() {
+        try {
+            int durationOfParking = 2;
+            int vehicleId = 1;
+            VehicleDetails vehicle = new VehicleDetails(durationOfParking, vehicleId);
+            parkingLotSystem.park(1,vehicle);
+            int charges = parkingLotSystem.unPark(1, vehicle);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
