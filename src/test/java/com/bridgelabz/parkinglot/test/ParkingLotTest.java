@@ -278,7 +278,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotSystem_WhenParkingAttendantParkCar_ShouldAskOwnerWhereToParkCar() {
-        try{
+        try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
             int slotNo = attendant.whereToPark(parkingLotSystem);
@@ -289,7 +289,7 @@ public class ParkingLotTest {
             parkingLotSystem.unPark(slotNo1);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 15);
             Assert.assertEquals(1, slotNo);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -310,14 +310,16 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnChargeForParking() {
         try {
-            int durationOfParking = 2;
-            int vehicleId = 1;
-            VehicleDetails vehicle = new VehicleDetails(durationOfParking, vehicleId);
-            parkingLotSystem.park(1,vehicle);
-            int charges = parkingLotSystem.unPark(1, vehicle);
+            VehicleDetails vehicleOne = new VehicleDetails(2);
+            parkingLotSystem.park(1, vehicleOne);
+            VehicleDetails vehicleTwo = new VehicleDetails(4);
+            parkingLotSystem.park(1, vehicleTwo);
+            VehicleDetails vehicleThree = new VehicleDetails(6);
+            parkingLotSystem.park(1, vehicleThree);
+            int charges = parkingLotSystem.unPark(1, vehicleThree.getDurationOfParking());
+            Assert.assertEquals(60, charges);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

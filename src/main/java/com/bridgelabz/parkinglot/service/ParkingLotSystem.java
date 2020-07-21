@@ -76,9 +76,8 @@ public class ParkingLotSystem {
         return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
     }
 
-    public int unPark(Integer slotNo, VehicleDetails vehicle) {
+    public int unPark(Integer slotNo, int durationOfParking) {
         parkingLot.put(slotNo, " ");
-//        int charges = PER_HOUR_CHARGE * vehicle.
-        return 0;
+        return PER_HOUR_CHARGE * durationOfParking;
     }
 }
