@@ -12,6 +12,7 @@ public class ParkingLotSystem {
     public int PER_HOUR_CHARGE = 10;
     public final LinkedHashMap<Object, Object> parkingLot = new LinkedHashMap<>();
     public final List<Object> parkedVehicleHistory = new ArrayList<>();
+    private int slotNo;
 
     public ParkingLotSystem(int slots) {
         for (int slotNo = 1; slotNo <= slots; slotNo++) {
@@ -41,6 +42,7 @@ public class ParkingLotSystem {
         if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         parkingLot.put(slotNo, vehicle);
+        this.slotNo = (int) slotNo;
         parkedVehicleHistory.add(vehicle);
     }
 
@@ -69,7 +71,7 @@ public class ParkingLotSystem {
         return map.keySet().stream().filter(key -> value.equals(map.get(key))).findFirst().orElse(null);
     }
 
-    public Object getVacantSlot() {
+    public Object getSlot() {
         return getKey(parkingLot, " ");
     }
 
@@ -83,7 +85,14 @@ public class ParkingLotSystem {
     }
 
     public void park(Object vehicle) throws ParkingLotException {
-        Object slotNo = getVacantSlot();
+        Object slotNo = getSlot();
         park(slotNo, vehicle);
+    }
+
+    public Object getSlot(DriverCategory driverCategory) {
+        if (DriverCategory.HANDICAPPED == driverCategory)
+            return getSlot();
+        Object slotNo = this.slotNo + 1;
+        return slotNo;
     }
 }

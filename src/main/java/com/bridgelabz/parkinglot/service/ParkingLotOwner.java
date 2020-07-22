@@ -10,7 +10,7 @@ public class ParkingLotOwner {
         return !parkingLotStatus ? "Parking Lot Not Full" : "Parking Lot Full";
     }
 
-    public Object askWhereToPark(ParkingLotSystem parkingLotSystem) {
-        return parkingLotSystem.getVacantSlot();
+    public Object askWhereToPark(ParkingLotSystem parkingLotSystem, DriverCategory driverCategory) {
+        return parkingLotSystem.getSlot(driverCategory);
     }
 }

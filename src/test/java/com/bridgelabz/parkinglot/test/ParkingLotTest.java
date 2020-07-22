@@ -276,14 +276,12 @@ public class ParkingLotTest {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
-            Object slotNo = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 11);
-            Object slotNo1 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
-            parkingLotSystem.unPark(slotNo1);
+            parkingLotSystem.unPark(parkingLotSystem.findVehicle(11));
+            Object slotNo2 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 15);
-            Assert.assertEquals(1, slotNo);
+            Assert.assertEquals(3, slotNo2);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
@@ -319,7 +317,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehicle_WhenParkedInParkingLow_ShouldParkedEvenlyDistribution() {
+    public void givenVehicle_WhenParkedInParkingLot_ShouldParkedEvenlyDistribution() {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             parkingLotSystem.park(1);
@@ -340,7 +338,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 11);
             Object slotNo1 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
-            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
+            parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 14);
             parkingLotSystem.unPark(slotNo1);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.HANDICAPPED), 15);
             Assert.assertEquals(1, slotNo);
