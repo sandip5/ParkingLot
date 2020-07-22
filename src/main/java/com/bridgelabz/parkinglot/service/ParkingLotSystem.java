@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.enums.DriverCategory;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class ParkingLotSystem {
         if (slotNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
         if (parkingLot.containsValue(vehicle))
+            throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
+        if(parkingLot.containsKey(slotNo) && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Duplicate Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
         if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);

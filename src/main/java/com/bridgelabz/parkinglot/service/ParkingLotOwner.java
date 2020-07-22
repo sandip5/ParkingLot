@@ -1,5 +1,7 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.enums.DriverCategory;
+
 public class ParkingLotOwner {
 
     public ParkingLotOwner() {

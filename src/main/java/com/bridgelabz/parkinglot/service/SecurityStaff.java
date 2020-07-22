@@ -1,4 +1,4 @@
-package com.bridgelabz.parkinglot.model;
+package com.bridgelabz.parkinglot.service;
 
 public class SecurityStaff {
     public String redirect(boolean checkFullSign) {

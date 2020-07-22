@@ -1,4 +1,4 @@
-package com.bridgelabz.parkinglot.service;
+package com.bridgelabz.parkinglot.model;
 
 public class VehicleDetails {
 

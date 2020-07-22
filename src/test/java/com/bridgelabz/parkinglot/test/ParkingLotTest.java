@@ -1,7 +1,9 @@
 package com.bridgelabz.parkinglot.test;
 
+import com.bridgelabz.parkinglot.enums.DriverCategory;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
-import com.bridgelabz.parkinglot.model.SecurityStaff;
+import com.bridgelabz.parkinglot.service.SecurityStaff;
+import com.bridgelabz.parkinglot.model.VehicleDetails;
 import com.bridgelabz.parkinglot.service.*;
 import org.junit.Assert;
 import org.junit.Before;
