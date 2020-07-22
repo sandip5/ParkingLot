@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
-    public int PER_HOUR_CHARGE = 10;
-    public final LinkedHashMap<Object, Object> parkingLot = new LinkedHashMap<>();
-    public final List<Object> parkedVehicleHistory = new ArrayList<>();
+    public final int PER_HOUR_CHARGE = 10;
+    private final LinkedHashMap<Object, Object> parkingLot = new LinkedHashMap<>();
+    private final List<Object> parkedVehicleHistory = new ArrayList<>();
     private int slotNo;
 
     public ParkingLotSystem(int slots) {
-        for (int slotNo = 1; slotNo <= slots; slotNo++) {
-            parkingLot.put(slotNo, " ");
-        }
+        IntStream.rangeClosed(1, slots).forEach(slotNo -> parkingLot.put(slotNo, " "));
     }
 
     public ParkingLotSystem() {
@@ -46,6 +45,11 @@ public class ParkingLotSystem {
         parkedVehicleHistory.add(vehicle);
     }
 
+    public void park(Object vehicle) throws ParkingLotException {
+        Object slotNo = getSlot();
+        park(slotNo, vehicle);
+    }
+
     public boolean isPark(Object vehicle) throws ParkingLotException {
         if (!parkedVehicleHistory.contains(vehicle))
             throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
@@ -60,33 +64,25 @@ public class ParkingLotSystem {
         parkingLot.put(slotNo, " ");
     }
 
+    public int unPark(Integer slotNo, int durationOfParking) {
+        unPark(slotNo);
+        return PER_HOUR_CHARGE * durationOfParking;
+    }
+
     public boolean isUnPark(Object vehicle) throws ParkingLotException {
-        if (parkingLot.isEmpty())
-            throw new ParkingLotException("Empty Parking Lot, Un-parked",
-                    ParkingLotException.ExceptionType.EMPTY_PARKING_LOT);
         return isPark(vehicle);
     }
 
-    public static <K, V> K getKey(Map<K, V> map, V value) {
+    public <K, V> K getKey(Map<K, V> map, V value) {
         return map.keySet().stream().filter(key -> value.equals(map.get(key))).findFirst().orElse(null);
+    }
+
+    public Object findVehicle(Object vehicle) {
+        return getKey(parkingLot, vehicle);
     }
 
     public Object getSlot() {
         return getKey(parkingLot, " ");
-    }
-
-    public Object findVehicle(Object vehicle) {
-        return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
-    }
-
-    public int unPark(Integer slotNo, int durationOfParking) {
-        parkingLot.put(slotNo, " ");
-        return PER_HOUR_CHARGE * durationOfParking;
-    }
-
-    public void park(Object vehicle) throws ParkingLotException {
-        Object slotNo = getSlot();
-        park(slotNo, vehicle);
     }
 
     public Object getSlot(DriverCategory driverCategory) {
