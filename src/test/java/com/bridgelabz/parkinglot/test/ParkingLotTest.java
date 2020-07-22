@@ -336,14 +336,13 @@ public class ParkingLotTest {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
-            Object slotNo = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 11);
-            Object slotNo1 = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
+            Object slotNoOne = attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 12);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.NORMAL), 14);
-            parkingLotSystem.unPark(slotNo1);
+            parkingLotSystem.unPark(slotNoOne);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem, DriverCategory.HANDICAPPED), 15);
-            Assert.assertEquals(1, slotNo);
+            Assert.assertEquals(2, slotNoOne);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
