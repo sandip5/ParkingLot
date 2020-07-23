@@ -2,18 +2,15 @@ package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
-    public int PER_HOUR_CHARGE = 10;
     public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
-    public final List<Object> parkedVehicleHistory = new ArrayList<>();
-    private int slotNo;
-    private VehicleDetails vehicleDetails;
+    public static final LinkedHashMap<Object, LocalDateTime> vehicleParkedTime = new LinkedHashMap<>();
+    LocalDateTime time = null;
 
     public ParkingLotSystem(int slots) {
         for (int slotNo = 1; slotNo <= slots; slotNo++) {
@@ -21,7 +18,8 @@ public class ParkingLotSystem {
         }
     }
 
-    public ParkingLotSystem() { }
+    public ParkingLotSystem() {
+    }
 
     public boolean checkLot(int lotSpace) {
         return parkingLot.size() == lotSpace + 1;
@@ -40,11 +38,12 @@ public class ParkingLotSystem {
         if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         parkingLot.put(slotNo, vehicle);
-        parkedVehicleHistory.add(vehicle);
+        time = LocalDateTime.now().withNano(0);
+        vehicleParkedTime.put(vehicle, time);
     }
 
     public boolean isPark(Object vehicle) throws ParkingLotException {
-        if (!parkedVehicleHistory.contains(vehicle))
+        if (!vehicleParkedTime.containsKey(vehicle))
             throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
         return parkingLot.containsValue(vehicle);
     }
@@ -74,10 +73,5 @@ public class ParkingLotSystem {
 
     public int findVehicle(Object vehicle) {
         return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
-    }
-
-    public int unPark(Integer slotNo, int durationOfParking) {
-        parkingLot.put(slotNo, " ");
-        return PER_HOUR_CHARGE * durationOfParking;
     }
 }

@@ -5,14 +5,14 @@ import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.Attendant;
 import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
-import com.bridgelabz.parkinglot.service.VehicleDetails;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
+import static com.bridgelabz.parkinglot.service.ParkingLotSystem.vehicleParkedTime;
 
 public class ParkingLotTest {
 
@@ -295,7 +295,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenFindVehicleUsingVehicleDetails_ShouldReturnOfVehicleSlot() {
+    public void givenParkingLotSystem_WhenFindVehicleUsingVehicleDetails_ShouldReturnSlot() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
@@ -308,16 +308,13 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnChargeForParking() {
+    public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnParkedTime() {
         try {
-            VehicleDetails vehicleOne = new VehicleDetails(2);
-            parkingLotSystem.park(1, vehicleOne);
-            VehicleDetails vehicleTwo = new VehicleDetails(4);
-            parkingLotSystem.park(2, vehicleTwo);
-            VehicleDetails vehicleThree = new VehicleDetails(6);
-            parkingLotSystem.park(3, vehicleThree);
-            int charges = parkingLotSystem.unPark(1, vehicleThree.getDurationOfParking());
-            Assert.assertEquals(60, charges);
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            parkingLotSystem.unPark(13);
+            Assert.assertEquals(vehicleParkedTime.get(13), LocalDateTime.now().withNano(0));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
