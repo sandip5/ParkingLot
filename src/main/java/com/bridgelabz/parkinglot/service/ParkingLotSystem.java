@@ -3,19 +3,19 @@ package com.bridgelabz.parkinglot.service;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
-    public static final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
-//    public static final LinkedHashMap<Object, LocalDateTime> vehicleParkedTime = new LinkedHashMap<>();
-    LocalDateTime time = null;
+    private final LinkedHashMap<Integer, SlotDetails> parkingLot = new LinkedHashMap<>();
+    private final List<Object> vehicleRecord = new ArrayList<>();
+    SlotDetails slotDetails = new SlotDetails();
 
     public ParkingLotSystem(int slots) {
-        for (int slotNo = 1; slotNo <= slots; slotNo++) {
-            parkingLot.put(slotNo, " ");
-        }
+        IntStream.rangeClosed(1, slots).forEach(slotNo -> parkingLot.put(slotNo, slotDetails));
     }
 
     public ParkingLotSystem() {
@@ -35,20 +35,18 @@ public class ParkingLotSystem {
         Object NOT_ALLOWED = 0;
         if (slotNo == NOT_ALLOWED || vehicle == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
-        if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
+        if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(null))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
-        time = LocalDateTime.now().withNano(0);
-        SlotDetails slotDetails = new SlotDetails(vehicle, time);
-        parkingLot.put(slotNo, slotDetails);
-        System.out.println(parkingLot);
-//        vehicleParkedTime.put(vehicle, time);
+        parkingLot.put(slotNo, new SlotDetails(vehicle, LocalDateTime.now().withNano(0)));
+        vehicleRecord.add(vehicle);
     }
 
     public boolean isPark(Object vehicle) throws ParkingLotException {
-//        if (!vehicleParkedTime.containsKey(vehicle))
-//            throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
-//        return parkingLot.containsValue(vehicle);
-        return true;
+        if (vehicle == null)
+            throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
+        if (!parkingLot.containsValue(getSlot(vehicle)))
+            throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
+        return this.slotDetails != getSlot(vehicle);
     }
 
     public void isPark() throws ParkingLotException {
@@ -56,7 +54,7 @@ public class ParkingLotSystem {
     }
 
     public void unPark(Integer slotNo) {
-        parkingLot.put(slotNo, " ");
+        parkingLot.put(slotNo, slotDetails);
     }
 
     public boolean isUnPark(Object vehicle) throws ParkingLotException {
@@ -66,15 +64,25 @@ public class ParkingLotSystem {
         return isPark(vehicle);
     }
 
-    public static <K, V> K getKey(Map<K, V> map, V value) {
+    public static Integer getKey(LinkedHashMap<Integer, SlotDetails> map, SlotDetails value) {
         return map.keySet().stream().filter(key -> value.equals(map.get(key))).findFirst().orElse(null);
     }
 
-    public int getVacantSlot() {
-        return getKey(parkingLot, " ");
+    public Integer getVacantSlot() {
+        return getKey(parkingLot, slotDetails);
     }
 
-    public int findVehicle(Object vehicle) {
-        return parkingLot.keySet().stream().filter(key -> vehicle.equals(parkingLot.get(key))).findFirst().orElse(null);
+    public SlotDetails getSlot(Object vehicle) {
+        return parkingLot.values().stream().filter(slot -> vehicle.equals(slot.getVehicle()))
+                .findFirst().orElse(null);
+    }
+
+    public Object findVehicle(Object vehicle) {
+        return parkingLot.keySet().stream().filter(key -> getSlot(vehicle).equals(parkingLot.get(key)))
+                .findFirst().orElse(null);
+    }
+
+    public LocalDateTime getParkingTime(Object slotNo) {
+        return parkingLot.get(slotNo).getTime();
     }
 }

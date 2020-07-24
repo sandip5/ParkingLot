@@ -12,8 +12,6 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
-import static com.bridgelabz.parkinglot.service.ParkingLotSystem.parkingLot;
-//import static com.bridgelabz.parkinglot.service.ParkingLotSystem.vehicleParkedTime;
 
 public class ParkingLotTest {
 
@@ -211,7 +209,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(1001, 101);
             parkingLotSystem.isPark(null);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.NO_VEHICLE, e.type);
+            Assert.assertEquals(ParkingLotException.ExceptionType.NULL_VALUE, e.type);
             System.out.println(e.getMessage());
         }
     }
@@ -270,9 +268,8 @@ public class ParkingLotTest {
             boolean isParked = parkingLotSystem.isPark(101);
             Assert.assertTrue(isParked);
             parkingLotSystem.unPark(1001);
-            parkingLotSystem.isUnPark(101);
+            Assert.assertFalse(parkingLotSystem.isUnPark(101));
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
             System.out.println(e.getMessage());
         }
     }
@@ -301,7 +298,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
-            int slotNo = parkingLotSystem.findVehicle(12);
+            Object slotNo = parkingLotSystem.findVehicle(12);
             Assert.assertEquals(2, slotNo);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -314,10 +311,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
-            parkingLotSystem.unPark(13);
-            Object slotDetails = parkingLot.get(3);
-            System.out.println(slotDetails);
-            Assert.assertEquals(slotDetails, LocalDateTime.now().withNano(0));
+            Assert.assertEquals(parkingLotSystem.getParkingTime(1), LocalDateTime.now().withNano(0));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
