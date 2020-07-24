@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class ParkingLotSystem {
     public static final int PARK_LOT_SIZE = 2;
-    public final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
-    public static final LinkedHashMap<Object, LocalDateTime> vehicleParkedTime = new LinkedHashMap<>();
+    public static final LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
+//    public static final LinkedHashMap<Object, LocalDateTime> vehicleParkedTime = new LinkedHashMap<>();
     LocalDateTime time = null;
 
     public ParkingLotSystem(int slots) {
@@ -37,15 +37,18 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
         if (parkingLot.size() > PARK_LOT_SIZE && !parkingLot.containsValue(" "))
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
-        parkingLot.put(slotNo, vehicle);
         time = LocalDateTime.now().withNano(0);
-        vehicleParkedTime.put(vehicle, time);
+        SlotDetails slotDetails = new SlotDetails(vehicle, time);
+        parkingLot.put(slotNo, slotDetails);
+        System.out.println(parkingLot);
+//        vehicleParkedTime.put(vehicle, time);
     }
 
     public boolean isPark(Object vehicle) throws ParkingLotException {
-        if (!vehicleParkedTime.containsKey(vehicle))
-            throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
-        return parkingLot.containsValue(vehicle);
+//        if (!vehicleParkedTime.containsKey(vehicle))
+//            throw new ParkingLotException("No Such Vehicle Parked Yet", ParkingLotException.ExceptionType.NO_VEHICLE);
+//        return parkingLot.containsValue(vehicle);
+        return true;
     }
 
     public void isPark() throws ParkingLotException {

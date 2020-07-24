@@ -12,7 +12,8 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
-import static com.bridgelabz.parkinglot.service.ParkingLotSystem.vehicleParkedTime;
+import static com.bridgelabz.parkinglot.service.ParkingLotSystem.parkingLot;
+//import static com.bridgelabz.parkinglot.service.ParkingLotSystem.vehicleParkedTime;
 
 public class ParkingLotTest {
 
@@ -314,7 +315,9 @@ public class ParkingLotTest {
             parkingLotSystem.park(2, 12);
             parkingLotSystem.park(3, 13);
             parkingLotSystem.unPark(13);
-            Assert.assertEquals(vehicleParkedTime.get(13), LocalDateTime.now().withNano(0));
+            Object slotDetails = parkingLot.get(3);
+            System.out.println(slotDetails);
+            Assert.assertEquals(slotDetails, LocalDateTime.now().withNano(0));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
