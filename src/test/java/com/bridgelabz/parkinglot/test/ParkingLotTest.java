@@ -5,10 +5,11 @@ import com.bridgelabz.parkinglot.model.SecurityStaff;
 import com.bridgelabz.parkinglot.service.Attendant;
 import com.bridgelabz.parkinglot.service.ParkingLotOwner;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
-import com.bridgelabz.parkinglot.service.VehicleDetails;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
 
 import static com.bridgelabz.parkinglot.service.ParkingLotSystem.PARK_LOT_SIZE;
 
@@ -208,7 +209,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(1001, 101);
             parkingLotSystem.isPark(null);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.NO_VEHICLE, e.type);
+            Assert.assertEquals(ParkingLotException.ExceptionType.NULL_VALUE, e.type);
             System.out.println(e.getMessage());
         }
     }
@@ -267,9 +268,8 @@ public class ParkingLotTest {
             boolean isParked = parkingLotSystem.isPark(101);
             Assert.assertTrue(isParked);
             parkingLotSystem.unPark(1001);
-            parkingLotSystem.isUnPark(101);
+            Assert.assertFalse(parkingLotSystem.isUnPark(101));
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.EMPTY_PARKING_LOT, e.type);
             System.out.println(e.getMessage());
         }
     }
@@ -279,9 +279,9 @@ public class ParkingLotTest {
         try {
             ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
             Attendant attendant = new Attendant();
-            Object slotNo = attendant.whereToPark(parkingLotSystem);
+            int slotNo = attendant.whereToPark(parkingLotSystem);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 11);
-            Object slotNo1 = attendant.whereToPark(parkingLotSystem);
+            int slotNo1 = attendant.whereToPark(parkingLotSystem);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
             parkingLotSystem.park(attendant.whereToPark(parkingLotSystem), 12);
             parkingLotSystem.unPark(slotNo1);
@@ -293,7 +293,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenFindVehicleUsingVehicleDetails_ShouldReturnOfVehicleSlot() {
+    public void givenParkingLotSystem_WhenFindVehicleUsingVehicleDetails_ShouldReturnSlot() {
         try {
             parkingLotSystem.park(1, 11);
             parkingLotSystem.park(2, 12);
@@ -306,29 +306,12 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnChargeForParking() {
+    public void givenParkingLotOwnerWantToKnow_WhenCarWasParkedOnMyLot_ShouldReturnParkedTime() {
         try {
-            VehicleDetails vehicleOne = new VehicleDetails(2);
-            parkingLotSystem.park(1, vehicleOne);
-            VehicleDetails vehicleTwo = new VehicleDetails(4);
-            parkingLotSystem.park(2, vehicleTwo);
-            VehicleDetails vehicleThree = new VehicleDetails(6);
-            parkingLotSystem.park(3, vehicleThree);
-            int charges = parkingLotSystem.unPark(3, vehicleThree.getDurationOfParking());
-            Assert.assertEquals(60, charges);
-        } catch (ParkingLotException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Test
-    public void givenVehicle_WhenParkedInParkingLow_ShouldParkedEvenlyDistribution() {
-        try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
-            parkingLotSystem.park(1);
-            parkingLotSystem.park(2);
-            parkingLotSystem.park(3);
-            Assert.assertEquals(2, parkingLotSystem.findVehicle(2));
+            parkingLotSystem.park(1, 11);
+            parkingLotSystem.park(2, 12);
+            parkingLotSystem.park(3, 13);
+            Assert.assertEquals(parkingLotSystem.getParkingTime(1), LocalDateTime.now().withNano(0));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
