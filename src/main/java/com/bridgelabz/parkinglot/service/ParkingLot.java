@@ -1,5 +1,7 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.model.SlotDetails;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
