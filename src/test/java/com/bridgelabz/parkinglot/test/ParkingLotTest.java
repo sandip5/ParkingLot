@@ -19,7 +19,7 @@ public class ParkingLotTest {
 
     @Before
     public void setUp() {
-        parkingLotSystem = new ParkingLotSystem();
+        parkingLotSystem = new ParkingLotSystem(3);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotSystem_WhenDriverParkedCar_ShouldReturnParkingStatusTrue()
             throws ParkingLotException {
-        parkingLotSystem.park(1001, 101);
+        parkingLotSystem.park(101);
         boolean parkingStatus = parkingLotSystem.isPark(101);
         Assert.assertTrue(parkingStatus);
     }
@@ -48,12 +48,12 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotSystem_WhenUnParkCar_ShouldReturnFalse() {
         try {
-            parkingLotSystem.park(1001, 101);
-            parkingLotSystem.park(1002, 102);
+            parkingLotSystem.park( 101);
+            parkingLotSystem.park( 102);
             boolean isParked = parkingLotSystem.isPark(101);
             Assert.assertTrue(isParked);
-            parkingLotSystem.unPark(1001);
-            boolean isUnParked = parkingLotSystem.isUnPark(101);
+//            parkingLotSystem.unPark(101);
+            boolean isUnParked = parkingLotSystem.unPark(101);
             Assert.assertFalse(isUnParked);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -64,10 +64,10 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotSystem_WhenLotFull_ShouldThrowException() {
         try {
-            parkingLotSystem.park(1, 11);
-            parkingLotSystem.park(2, 12);
-            parkingLotSystem.park(3, 13);
-            parkingLotSystem.park(4, 14);
+            parkingLotSystem.park(11);
+            parkingLotSystem.park(12);
+            parkingLotSystem.park(13);
+            parkingLotSystem.park(14);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_FULL, e.type);
             System.out.println(e.getMessage());
@@ -77,12 +77,12 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotSystem_WhenLotFull_SoThatOwnerCanPutFullSign() {
         try {
-            parkingLotSystem.park(1, 11);
-            parkingLotSystem.park(2, 12);
-            parkingLotSystem.park(3, 13);
-            ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-            String parkingLotStatus = parkingLotOwner.getStatus(PARK_LOT_SIZE, parkingLotSystem);
-            Assert.assertEquals("Parking Lot Full", parkingLotStatus);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2);
+            parkingLotSystem.park(11);
+            parkingLotSystem.park(12);
+            parkingLotSystem.park(13);
+            parkingLotSystem.park(14);
+            Assert.assertTrue(parkingLotSystem.checkAvailableSlot());
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
@@ -91,9 +91,10 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotSystem_WhenLotFull_SoThatRedirectSecurityStaff() {
         try {
-            parkingLotSystem.park(1, 11);
-            parkingLotSystem.park(2, 12);
-            parkingLotSystem.park(3, 13);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2);
+            parkingLotSystem.park(11);
+            parkingLotSystem.park(12);
+            parkingLotSystem.park(13);
             boolean checkFullSign = parkingLotSystem.checkLot(PARK_LOT_SIZE);
             SecurityStaff security = new SecurityStaff();
             String redirectMessage = security.redirect(checkFullSign);

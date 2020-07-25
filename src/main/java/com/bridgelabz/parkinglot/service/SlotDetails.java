@@ -31,4 +31,12 @@ public class SlotDetails {
         return Objects.equals(vehicle, that.vehicle) &&
                 Objects.equals(time, that.time);
     }
+
+    @Override
+    public String toString() {
+        return "SlotDetails{" +
+                "vehicle=" + vehicle +
+                ", time=" + time +
+                '}';
+    }
 }
