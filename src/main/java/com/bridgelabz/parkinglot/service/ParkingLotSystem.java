@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.enums.DriverCategory;
+import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SlotDetails;
@@ -160,5 +161,23 @@ public class ParkingLotSystem {
             }
         }
         return null;
+    }
+
+    public List findLocationOfWhiteVehicle(VehicleColor color) {
+        List allWhiteVehicleLocation = new ArrayList();
+        int counter = 0;
+        for (ParkingLot parkingLot : parkingLot) {
+            counter++;
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    if (entry.getValue().getVehicleDetails().getColor().equals(color)) {
+                        Integer key = entry.getKey();
+                        String location = "Lot :" + counter + "," + "Slot :" + key;
+                        allWhiteVehicleLocation.add(location);
+                    }
+                }
+            }
+        }
+        return allWhiteVehicleLocation;
     }
 }

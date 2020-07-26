@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglot.test;
 
 import com.bridgelabz.parkinglot.enums.DriverCategory;
+import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.VehicleDetails;
@@ -12,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class ParkingLotTest {
 
@@ -316,6 +319,20 @@ public class ParkingLotTest {
             Assert.assertEquals("Lot :2,Slot :2", vehicleLocation);
         } catch (ParkingLotException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenWhiteVehicle_WhenParked_ShouldReturnWhiteCarLocation() {
+        try {
+            parkingLotSystem.park(new VehicleDetails(1, DriverCategory.NORMAL, VehicleSize.SMALL, VehicleColor.NO_COLOR));
+            parkingLotSystem.park(new VehicleDetails(2, DriverCategory.NORMAL, VehicleSize.SMALL, VehicleColor.WHITE));
+            parkingLotSystem.park(new VehicleDetails(3, DriverCategory.NORMAL, VehicleSize.SMALL, VehicleColor.WHITE));
+            List locationOfSecondWhiteVehicle = parkingLotSystem.findLocationOfWhiteVehicle(VehicleColor.WHITE);
+            List<String> expected = Arrays.asList("Lot :2,Slot :1", "Lot :3,Slot :1");
+            Assert.assertEquals(expected, locationOfSecondWhiteVehicle);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
