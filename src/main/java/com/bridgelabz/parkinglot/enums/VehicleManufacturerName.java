@@ -1,5 +1,5 @@
 package com.bridgelabz.parkinglot.enums;
 
 public enum VehicleManufacturerName {
-    TOYOTA
+    TOYOTA, BMW
 }

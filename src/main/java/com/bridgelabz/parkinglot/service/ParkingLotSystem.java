@@ -202,4 +202,23 @@ public class ParkingLotSystem {
         }
         return allBlueToyotaVehicleLocation;
     }
+
+    public List findLocationOfBmwVehicle(VehicleManufacturerName vehicleManufacturerName) {
+        List allBmwVehicleLocation = new ArrayList();
+        int counter = 0;
+        for (ParkingLot parkingLot : parkingLot) {
+            counter++;
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    if (entry.getValue().getVehicleDetails().getVehicleManufacturerName()
+                            .equals(vehicleManufacturerName)) {
+                        Integer key = entry.getKey();
+                        String location = "Lot :" + counter + "," + "Slot :" + key;
+                        allBmwVehicleLocation.add(location);
+                    }
+                }
+            }
+        }
+        return allBmwVehicleLocation;
+    }
 }
