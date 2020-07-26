@@ -3,15 +3,25 @@ package com.bridgelabz.parkinglot.model;
 import java.time.LocalDateTime;
 
 public class SlotDetails {
-    public VehicleDetails vehicle;
+    private final String attendantName;
+    public ParkedVehicleDetails vehicle;
     private LocalDateTime time;
 
-    public SlotDetails(VehicleDetails vehicle, LocalDateTime time) {
+    public SlotDetails(ParkedVehicleDetails vehicle, LocalDateTime time, String attendantName) {
         this.vehicle = vehicle;
         this.time = time;
+        this.attendantName = attendantName;
     }
 
-    public VehicleDetails getVehicleDetails() {
+    public ParkedVehicleDetails getVehicleDetails() {
+        return vehicle;
+    }
+
+    public String getAttendantName() {
+        return attendantName;
+    }
+
+    public ParkedVehicleDetails getVehicle() {
         return vehicle;
     }
 

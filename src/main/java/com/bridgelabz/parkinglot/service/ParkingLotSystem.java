@@ -2,10 +2,11 @@ package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.enums.DriverCategory;
 import com.bridgelabz.parkinglot.enums.VehicleColor;
+import com.bridgelabz.parkinglot.enums.VehicleManufacturerName;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
+import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.SlotDetails;
-import com.bridgelabz.parkinglot.model.VehicleDetails;
 import com.bridgelabz.parkinglot.observer.IParkingLotSystemObserver;
 
 import java.time.LocalDateTime;
@@ -37,36 +38,36 @@ public class ParkingLotSystem {
     }
 
 
-    public void park(VehicleDetails vehicle) throws ParkingLotException {
-        if (vehicle == null)
+    public void park(ParkedVehicleDetails parkedVehicleDetails, String attendantName) throws ParkingLotException {
+        if (parkedVehicleDetails == null)
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
         Object NOT_ALLOWED = 0;
-        if (vehicle.getVehicle() == NOT_ALLOWED)
+        if (parkedVehicleDetails.getVehicle() == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
-        if (isPark(vehicle.getVehicle()))
+        if (isPark(parkedVehicleDetails.getVehicle()))
             throw new ParkingLotException("Duplicate Entry Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
         if (checkAvailableSlot()) {
             systemObservers.forEach(IParkingLotSystemObserver::capacityIsFull);
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         }
-        SlotDetails slotValue = new SlotDetails(vehicle, LocalDateTime.now().withNano(0));
-        ParkingLot parkingLot = getLot(this.parkingLot, vehicle);
+        SlotDetails slotValue = new SlotDetails(parkedVehicleDetails, LocalDateTime.now().withNano(0), attendantName);
+        ParkingLot parkingLot = getLot(this.parkingLot, parkedVehicleDetails);
         int slotNo = getSpot(parkingLot);
         parkingLot.parkingLotMap.put(slotNo, slotValue);
         System.out.println(parkingLot.parkingLotMap);
     }
 
-    public ParkingLot getLot(List<ParkingLot> parkingLots, VehicleDetails vehicleDetails) {
-        if (vehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
-                vehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
+    public ParkingLot getLot(List<ParkingLot> parkingLots, ParkedVehicleDetails parkedVehicleDetails) {
+        if (parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
+                parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
             List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
             parkingLotList.sort(Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehicles()));
             return parkingLotList.get(0);
-        } else if (vehicleDetails.getDriverCategory() == DriverCategory.HANDICAPPED &&
-                vehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
+        } else if (parkedVehicleDetails.getDriverCategory() == DriverCategory.HANDICAPPED &&
+                parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
             return getNearestFreeSpace(parkingLots);
-        } else if (vehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
-                vehicleDetails.getVehicleSize() == VehicleSize.LARGE) {
+        } else if (parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
+                parkedVehicleDetails.getVehicleSize() == VehicleSize.LARGE) {
             return getSlotForLargeVehicle(parkingLots);
         }
         return null;
@@ -179,5 +180,26 @@ public class ParkingLotSystem {
             }
         }
         return allWhiteVehicleLocation;
+    }
+
+    public List findLocationOfBlueToyotaVehicle(VehicleColor color, VehicleManufacturerName vehicleManufacturerName) {
+        List allBlueToyotaVehicleLocation = new ArrayList();
+        int counter = 0;
+        for (ParkingLot parkingLot : parkingLot) {
+            counter++;
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    if (entry.getValue().getVehicleDetails().getColor().equals(color) && entry.getValue()
+                            .getVehicleDetails().getVehicleManufacturerName().equals(vehicleManufacturerName)) {
+                        Integer key = entry.getKey();
+                        String vehicleDetails = "Lot :" + counter + "," + "Slot :" + key +
+                                "," + "Plate Number :" + entry.getValue().getVehicleDetails().getVehicle() + "," +
+                                "Parking Attendant :" + entry.getValue().getAttendantName();
+                        allBlueToyotaVehicleLocation.add(vehicleDetails);
+                    }
+                }
+            }
+        }
+        return allBlueToyotaVehicleLocation;
     }
 }
