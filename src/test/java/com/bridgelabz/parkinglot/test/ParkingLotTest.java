@@ -301,15 +301,18 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenLargeVehicle_WhenParked_ShouldParkedInMostNumberOfFreeSlot() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2);
+    public void givenLargeVehicle_WhenParked_ShouldParkedInMostNumberOfFreeSlots() {
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3);
         try {
             parkingLotSystem.park(new VehicleDetails(1, DriverCategory.NORMAL, VehicleSize.SMALL));
             parkingLotSystem.park(new VehicleDetails(2, DriverCategory.NORMAL, VehicleSize.SMALL));
             parkingLotSystem.park(new VehicleDetails(3, DriverCategory.NORMAL, VehicleSize.SMALL));
-            VehicleDetails vehicleDetails = new VehicleDetails(4, DriverCategory.NORMAL, VehicleSize.SMALL);
+            parkingLotSystem.park(new VehicleDetails(4, DriverCategory.NORMAL, VehicleSize.LARGE));
+            parkingLotSystem.park(new VehicleDetails(5, DriverCategory.NORMAL, VehicleSize.LARGE));
+            parkingLotSystem.park(new VehicleDetails(6, DriverCategory.NORMAL, VehicleSize.SMALL));
+            VehicleDetails vehicleDetails = new VehicleDetails(7, DriverCategory.NORMAL, VehicleSize.LARGE);
             parkingLotSystem.park(vehicleDetails);
-            String vehicleLocation = parkingLotSystem.getVehicleLocation(4);
+            String vehicleLocation = parkingLotSystem.getVehicleLocation(5);
             Assert.assertEquals("Lot :2,Slot :2", vehicleLocation);
         } catch (ParkingLotException e) {
             e.printStackTrace();

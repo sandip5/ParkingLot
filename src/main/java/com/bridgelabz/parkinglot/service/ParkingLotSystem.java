@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.enums.DriverCategory;
+import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SlotDetails;
 import com.bridgelabz.parkinglot.model.VehicleDetails;
@@ -48,23 +49,26 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         }
         SlotDetails slotValue = new SlotDetails(vehicle, LocalDateTime.now().withNano(0));
-        ParkingLot parkingLot = getLot(this.parkingLot, vehicle.getDriverCategory());
+        ParkingLot parkingLot = getLot(this.parkingLot, vehicle);
         int slotNo = getSpot(parkingLot);
         parkingLot.parkingLotMap.put(slotNo, slotValue);
         System.out.println(parkingLot.parkingLotMap);
     }
 
-    public ParkingLot getLot(List<ParkingLot> parkingLots, DriverCategory driverCategory) {
-        switch (driverCategory) {
-            case NORMAL:
-                List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
-                parkingLotList.sort(Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehicles()));
-                return parkingLotList.get(0);
-            case HANDICAPPED:
-                return getNearestFreeSpace(parkingLots);
-            default:
-                throw new IllegalStateException("Unexpected value: " + driverCategory);
+    public ParkingLot getLot(List<ParkingLot> parkingLots, VehicleDetails vehicleDetails) {
+        if (vehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
+                vehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
+            List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
+            parkingLotList.sort(Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehicles()));
+            return parkingLotList.get(0);
+        } else if (vehicleDetails.getDriverCategory() == DriverCategory.HANDICAPPED &&
+                vehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
+            return getNearestFreeSpace(parkingLots);
+        } else if (vehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
+                vehicleDetails.getVehicleSize() == VehicleSize.LARGE) {
+            return getSlotForLargeVehicle(parkingLots);
         }
+        return null;
     }
 
     public Integer getSpot(ParkingLot parkingLot) {
@@ -141,17 +145,10 @@ public class ParkingLotSystem {
         return null;
     }
 
-    public ParkingLot getSlotForLargeVehicle(List<ParkingLot> parkingLots){
-        for (int i = 0; i < parkingLot.size(); i++) {
-            ParkingLot parkingLot = parkingLots.get(i);
-            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
-                if (entry.getValue() == null) {
-                    key = entry.getKey();
-                    return parkingLot;
-                }
-            }
-        }
-        return null;
+    public ParkingLot getSlotForLargeVehicle(List<ParkingLot> parkingLots) {
+        List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
+        parkingLotList.sort(Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehicles()));
+        return parkingLotList.get(0);
     }
 
     public ParkingLot getNearestFreeSpace(List<ParkingLot> parkingLots) {
