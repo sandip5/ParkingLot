@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ParkingLotTest {
@@ -478,7 +479,7 @@ public class ParkingLotTest {
                     VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
             List<String> locationOfSecondWhiteVehicle = parkingLotSystem.
                     findLocationOfVehicleWhichParkedInSpecificLot(DriverCategory.HANDICAPPED, 2);
-            List<String> expected = Arrays.asList("Lot :2,Slot :3");
+            List<String> expected = Collections.singletonList("Lot :2,Slot :3");
             Assert.assertEquals(expected, locationOfSecondWhiteVehicle);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
@@ -514,6 +515,26 @@ public class ParkingLotTest {
             Assert.assertEquals(expected, locationOfSecondWhiteVehicle);
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenVehicle_WhenParkedAndParkingLotFull_ShouldThrowException() {
+        try {
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2, 2);
+            parkingLotSystem.park(new ParkedVehicleDetails(1, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.NO_COLOR, VehicleManufacturerName.BMW), "Galaxy");
+            parkingLotSystem.park(new ParkedVehicleDetails(2, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            parkingLotSystem.park(new ParkedVehicleDetails(3, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.BMW), "Moon");
+            parkingLotSystem.park(new ParkedVehicleDetails(4, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.TOYOTA), "Sky");
+            parkingLotSystem.park(new ParkedVehicleDetails(5, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+        }catch (ParkingLotException e){
+            System.out.println(e.getMessage());
+            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_SIZE_FULL, e.type);
         }
     }
 }
