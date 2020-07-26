@@ -221,4 +221,22 @@ public class ParkingLotSystem {
         }
         return allBmwVehicleLocation;
     }
+
+    public List findLocationOfVehicleWhichParkedInLastThirtyMinutes(int minutes) {
+        List allVehicleLocationWhichParkedInLastThirtyMinute = new ArrayList();
+        int counter = 0;
+        for (ParkingLot parkingLot : parkingLot) {
+            counter++;
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    if (entry.getValue().getTime().getMinute() < LocalDateTime.now().withMinute(minutes).getMinute()) {
+                        Integer key = entry.getKey();
+                        String location = "Lot :" + counter + "," + "Slot :" + key;
+                        allVehicleLocationWhichParkedInLastThirtyMinute.add(location);
+                    }
+                }
+            }
+        }
+        return allVehicleLocationWhichParkedInLastThirtyMinute;
+    }
 }

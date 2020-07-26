@@ -375,4 +375,23 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void givenVehicle_WhenParked_ShouldReturnVehicleThatHaveBeenParkedLastThirtyMinutes() {
+        try {
+            parkingLotSystem.park(new ParkedVehicleDetails(1, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.NO_COLOR, VehicleManufacturerName.BMW), "Galaxy");
+            parkingLotSystem.park(new ParkedVehicleDetails(2, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            parkingLotSystem.park(new ParkedVehicleDetails(3, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.BMW), "Moon");
+            parkingLotSystem.park(new ParkedVehicleDetails(4, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.TOYOTA), "Sky");
+            List locationOfSecondWhiteVehicle = parkingLotSystem.findLocationOfVehicleWhichParkedInLastThirtyMinutes(30);
+            List<String> expected = Arrays.asList("Lot :1,Slot :1", "Lot :1,Slot :2", "Lot :2,Slot :1", "Lot :3,Slot :1");
+            Assert.assertEquals(expected, locationOfSecondWhiteVehicle);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
