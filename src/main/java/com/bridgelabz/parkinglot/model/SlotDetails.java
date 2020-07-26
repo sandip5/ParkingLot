@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class SlotDetails {
     private final String attendantName;
     public ParkedVehicleDetails vehicle;
-    private LocalDateTime time;
+    private final LocalDateTime time;
 
     public SlotDetails(ParkedVehicleDetails vehicle, LocalDateTime time, String attendantName) {
         this.vehicle = vehicle;
@@ -21,19 +21,7 @@ public class SlotDetails {
         return attendantName;
     }
 
-    public ParkedVehicleDetails getVehicle() {
-        return vehicle;
-    }
-
     public LocalDateTime getTime() {
         return time;
-    }
-
-    @Override
-    public String toString() {
-        return "SlotDetails{" +
-                "vehicle=" + vehicle +
-                ", time=" + time +
-                '}';
     }
 }
