@@ -31,7 +31,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(DriverCategory.NORMAL, 101);
             boolean parkingStatus = parkingLotSystem.isPark(101);
             Assert.assertTrue(parkingStatus);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -203,7 +203,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(DriverCategory.NORMAL, 12);
             parkingLotSystem.park(DriverCategory.NORMAL, 13);
             parkingLotSystem.park(DriverCategory.NORMAL, 14);
-            Assert.assertEquals("Lot :1,Slot :2", parkingLotSystem.getVehicleLocation(14));
+            Assert.assertEquals("Lot :2,Slot :2", parkingLotSystem.getVehicleLocation(14));
         } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
@@ -243,7 +243,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(DriverCategory.NORMAL, 2);
             parkingLotSystem.park(DriverCategory.NORMAL, 3);
             parkingLotSystem.park(DriverCategory.NORMAL, 4);
-            Assert.assertEquals("Lot :1,Slot :1", parkingLotSystem.getVehicleLocation(1));
+            Assert.assertEquals("Lot :2,Slot :2", parkingLotSystem.getVehicleLocation(4));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -285,9 +285,10 @@ public class ParkingLotTest {
         try {
             parkingLotSystem.park(DriverCategory.NORMAL, 1);
             parkingLotSystem.park(DriverCategory.NORMAL, 2);
-            parkingLotSystem.park(DriverCategory.HANDICAPPED, 3);
+            parkingLotSystem.unPark(2);
+            parkingLotSystem.park(DriverCategory.NORMAL, 3);
             parkingLotSystem.park(DriverCategory.HANDICAPPED, 4);
-            Assert.assertEquals("Lot :2,Slot :2", parkingLotSystem.getVehicleLocation(4));
+            Assert.assertEquals("Lot :1,Slot :2", parkingLotSystem.getVehicleLocation(4));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }

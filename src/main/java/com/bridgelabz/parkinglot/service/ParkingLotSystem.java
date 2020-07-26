@@ -46,20 +46,23 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         }
         SlotDetails slotValue = new SlotDetails(vehicle, LocalDateTime.now().withNano(0));
-        ParkingLot parkingLot;
-        int slotNo;
-        if(DriverCategory.NORMAL == driverCategory){
-            parkingLot = getLot(this.parkingLot);
-        } else {
-            parkingLot = getNearestFreeSpace();
-        }
-        slotNo = getSpot(parkingLot);
+        ParkingLot parkingLot = getLot(this.parkingLot, driverCategory);
+        int slotNo = getSpot(parkingLot);
         parkingLot.parkingLotMap.put(slotNo, slotValue);
+        System.out.println(parkingLot.parkingLotMap);
     }
 
-    public ParkingLot getLot(List<ParkingLot> parkingLots) {
-        parkingLots.sort(Comparator.comparing(ParkingLot::getNumberOfVehicles));
-        return parkingLots.get(0);
+    public ParkingLot getLot(List<ParkingLot> parkingLots, DriverCategory driverCategory) {
+        switch (driverCategory) {
+            case NORMAL:
+                List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
+                parkingLotList.sort(Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehicles()));
+                return parkingLotList.get(0);
+            case HANDICAPPED:
+                return getNearestFreeSpace(parkingLots);
+            default:
+                throw new IllegalStateException("Unexpected value: " + driverCategory);
+        }
     }
 
     public Integer getSpot(ParkingLot parkingLot) {
@@ -97,6 +100,7 @@ public class ParkingLotSystem {
                 if (entry.getValue() != null) {
                     if (entry.getValue().getVehicle().equals(vehicle)) {
                         Integer key = entry.getKey();
+                        System.out.println(key);
                         parkingLot.parkingLotMap.put(key, null);
                         systemObservers.forEach(IParkingLotSystemObserver::capacityIsAvailable);
                         return true;
@@ -135,13 +139,14 @@ public class ParkingLotSystem {
         return null;
     }
 
-    public ParkingLot getNearestFreeSpace(){
-        for (ParkingLot parkingLot : parkingLot)
+    public ParkingLot getNearestFreeSpace(List<ParkingLot> parkingLots) {
+        for (ParkingLot parkingLot : parkingLots) {
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() == null) {
                     return parkingLot;
                 }
             }
+        }
         return null;
     }
 }
