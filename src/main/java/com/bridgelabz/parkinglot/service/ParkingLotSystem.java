@@ -239,4 +239,24 @@ public class ParkingLotSystem {
         }
         return allVehicleLocationWhichParkedInLastThirtyMinute;
     }
+
+    public List findLocationOfVehicleWhichParkedInSpecificLot(DriverCategory driverCategory, int lot) {
+        List allHandicappedDriverVehicleLocation = new ArrayList();
+        int counter = 0;
+        for (ParkingLot parkingLot : parkingLot) {
+            counter++;
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    if (counter == lot) {
+                        if (entry.getValue().getVehicleDetails().getDriverCategory().equals(driverCategory)) {
+                            Integer key = entry.getKey();
+                            String location = "Lot :" + counter + "," + "Slot :" + key;
+                            allHandicappedDriverVehicleLocation.add(location);
+                        }
+                    }
+                }
+            }
+        }
+        return allHandicappedDriverVehicleLocation;
+    }
 }

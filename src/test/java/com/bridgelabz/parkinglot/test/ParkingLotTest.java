@@ -394,4 +394,34 @@ public class ParkingLotTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void givenVehicle_WhenHandicapDriverParkedCarInSpecificLot_ShouldReturnThatSpecificLot() {
+        try {
+            parkingLotSystem.park(new ParkedVehicleDetails(1, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.NO_COLOR, VehicleManufacturerName.BMW), "Galaxy");
+            parkingLotSystem.park(new ParkedVehicleDetails(2, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            parkingLotSystem.park(new ParkedVehicleDetails(3, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.BMW), "Moon");
+            parkingLotSystem.park(new ParkedVehicleDetails(4, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.TOYOTA), "Sky");
+            parkingLotSystem.park(new ParkedVehicleDetails(5, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            parkingLotSystem.park(new ParkedVehicleDetails(6, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.BMW), "Moon");
+            parkingLotSystem.park(new ParkedVehicleDetails(7, DriverCategory.NORMAL, VehicleSize.SMALL,
+                    VehicleColor.BLUE, VehicleManufacturerName.TOYOTA), "Sky");
+            parkingLotSystem.park(new ParkedVehicleDetails(8, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            parkingLotSystem.park(new ParkedVehicleDetails(9, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
+                    VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
+            List locationOfSecondWhiteVehicle = parkingLotSystem.
+                    findLocationOfVehicleWhichParkedInSpecificLot(DriverCategory.HANDICAPPED, 2);
+            List<String> expected = Arrays.asList("Lot :2,Slot :3");
+            Assert.assertEquals(expected, locationOfSecondWhiteVehicle);
+        } catch (ParkingLotException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
