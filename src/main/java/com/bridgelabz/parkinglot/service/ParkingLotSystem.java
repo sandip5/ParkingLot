@@ -3,6 +3,7 @@ package com.bridgelabz.parkinglot.service;
 import com.bridgelabz.parkinglot.enums.DriverCategory;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.SlotDetails;
+import com.bridgelabz.parkinglot.model.VehicleDetails;
 import com.bridgelabz.parkinglot.observer.IParkingLotSystemObserver;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public class ParkingLotSystem {
     private final int lotSize;
     public List<ParkingLot> parkingLot;
     List<IParkingLotSystemObserver> systemObservers;
+    private Integer key;
 
     public ParkingLotSystem(int slots) {
         this.lotSize = slots;
@@ -33,20 +35,20 @@ public class ParkingLotSystem {
     }
 
 
-    public void park(DriverCategory driverCategory, Object vehicle) throws ParkingLotException {
+    public void park(VehicleDetails vehicle) throws ParkingLotException {
         if (vehicle == null)
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
         Object NOT_ALLOWED = 0;
-        if (vehicle == NOT_ALLOWED)
+        if (vehicle.getVehicle() == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
-        if (isPark(vehicle))
+        if (isPark(vehicle.getVehicle()))
             throw new ParkingLotException("Duplicate Entry Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
         if (checkAvailableSlot()) {
             systemObservers.forEach(IParkingLotSystemObserver::capacityIsFull);
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         }
         SlotDetails slotValue = new SlotDetails(vehicle, LocalDateTime.now().withNano(0));
-        ParkingLot parkingLot = getLot(this.parkingLot, driverCategory);
+        ParkingLot parkingLot = getLot(this.parkingLot, vehicle.getDriverCategory());
         int slotNo = getSpot(parkingLot);
         parkingLot.parkingLotMap.put(slotNo, slotValue);
         System.out.println(parkingLot.parkingLotMap);
@@ -82,7 +84,7 @@ public class ParkingLotSystem {
         for (ParkingLot parkingLot : parkingLot)
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() != null) {
-                    if (entry.getValue().getVehicle().equals(vehicle)) {
+                    if (entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                         return true;
                     }
                 }
@@ -98,7 +100,7 @@ public class ParkingLotSystem {
         for (ParkingLot parkingLot : parkingLot)
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() != null) {
-                    if (entry.getValue().getVehicle().equals(vehicle)) {
+                    if (entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                         Integer key = entry.getKey();
                         System.out.println(key);
                         parkingLot.parkingLotMap.put(key, null);
@@ -114,7 +116,7 @@ public class ParkingLotSystem {
         for (ParkingLot parkingLot : parkingLot)
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() != null) {
-                    if (entry.getValue().getVehicle().equals(vehicle)) {
+                    if (entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                         Integer key = entry.getKey();
                         return parkingLot.parkingLotMap.get(key).getTime();
                     }
@@ -129,10 +131,23 @@ public class ParkingLotSystem {
             counter++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() != null) {
-                    if (entry.getValue().getVehicle().equals(vehicle)) {
+                    if (entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                         Integer key = entry.getKey();
                         return "Lot :" + counter + "," + "Slot :" + key;
                     }
+                }
+            }
+        }
+        return null;
+    }
+
+    public ParkingLot getSlotForLargeVehicle(List<ParkingLot> parkingLots){
+        for (int i = 0; i < parkingLot.size(); i++) {
+            ParkingLot parkingLot = parkingLots.get(i);
+            for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
+                if (entry.getValue() == null) {
+                    key = entry.getKey();
+                    return parkingLot;
                 }
             }
         }
