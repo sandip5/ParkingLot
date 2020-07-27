@@ -50,22 +50,22 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
         }
         SlotDetails slotValue = new SlotDetails(parkedVehicleDetails, LocalDateTime.now().withNano(0), attendantName);
-        ParkingLot parkingLot = getLot(this.parkingLot, parkedVehicleDetails);
+        ParkingLot parkingLot = getLot(parkedVehicleDetails);
         int slotNo = getSlot(parkingLot);
         parkingLot.parkingSlots.put(slotNo, slotValue);
     }
 
-    public ParkingLot getLot(List<ParkingLot> parkingLots, ParkedVehicleDetails parkedVehicleDetails) {
+    public ParkingLot getLot(ParkedVehicleDetails parkedVehicleDetails) {
         if (parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
                 parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
-            List<ParkingLot> parkingLotList = new ArrayList<>(parkingLots);
+            List<ParkingLot> parkingLotList = new ArrayList<>(parkingLot);
             parkingLotList.sort(Comparator.comparing(ParkingLot::getTotalNumberOfVehicleParked));
             return parkingLotList.get(0);
         }
         if (parkedVehicleDetails.getDriverCategory() == DriverCategory.HANDICAPPED &&
-                parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) return getNearestFreeSpace(parkingLots);
+                parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) return getNearestFreeSpace(parkingLot);
         return parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
-                parkedVehicleDetails.getVehicleSize() == VehicleSize.LARGE ? getSlotForLargeVehicle(parkingLots) : null;
+                parkedVehicleDetails.getVehicleSize() == VehicleSize.LARGE ? getSlotForLargeVehicle(parkingLot) : null;
     }
 
     public int getSlot(ParkingLot parkingLot) {
