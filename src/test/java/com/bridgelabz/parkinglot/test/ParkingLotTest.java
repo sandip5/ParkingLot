@@ -93,7 +93,7 @@ public class ParkingLotTest {
     public void givenParkingLotSystem_WhenLotFull_ShouldReturnTrue() {
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
         try {
-            ParkingLot parkingLot = new ParkingLot(2, 3);
+            ParkingLot parkingLot = new ParkingLot(2, 2);
             parkingLot.registerListener(parkingLotOwner);
             parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
@@ -102,6 +102,8 @@ public class ParkingLotTest {
             parkingLot.park(new ParkedVehicleDetails(13, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
             parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(15, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
         } catch (ParkingLotException e) {
             Assert.assertTrue(parkingLotOwner.isFullCapacity());
@@ -113,7 +115,7 @@ public class ParkingLotTest {
     public void givenParkingLotSystem_WhenLotNotFull_ShouldReturnFalse() {
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
         try {
-            ParkingLot parkingLot = new ParkingLot(2, 3);
+            ParkingLot parkingLot = new ParkingLot(2, 2);
             parkingLot.registerListener(parkingLotOwner);
             parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
@@ -123,9 +125,9 @@ public class ParkingLotTest {
                     "Ashish");
             parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
-        } catch (ParkingLotException e) {
             parkingLot.unPark(14);
             Assert.assertFalse(parkingLotOwner.isFullCapacity());
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -134,7 +136,7 @@ public class ParkingLotTest {
     public void givenSecurityStaff_WhenLotFull_ShouldReturnTrue() {
         SecurityStaff securityStaff = new SecurityStaff();
         try {
-            ParkingLot parkingLot = new ParkingLot(2, 3);
+            ParkingLot parkingLot = new ParkingLot(2, 2);
             parkingLot.registerListener(securityStaff);
             parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
@@ -143,6 +145,8 @@ public class ParkingLotTest {
             parkingLot.park(new ParkedVehicleDetails(13, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
             parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(15, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
         } catch (ParkingLotException e) {
             Assert.assertTrue(securityStaff.isFullCapacity());
@@ -154,7 +158,7 @@ public class ParkingLotTest {
     public void givenSecurityStaff_WhenLotNotFull_ShouldReturnFalse() {
         SecurityStaff securityStaff = new SecurityStaff();
         try {
-            ParkingLot parkingLot = new ParkingLot(2, 3);
+            ParkingLot parkingLot = new ParkingLot(2, 2);
             parkingLot.registerListener(securityStaff);
             parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
@@ -164,9 +168,9 @@ public class ParkingLotTest {
                     "Ashish");
             parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL),
                     "Ashish");
-        } catch (ParkingLotException e) {
             parkingLot.unPark(14);
             Assert.assertFalse(securityStaff.isFullCapacity());
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
