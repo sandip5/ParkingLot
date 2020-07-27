@@ -44,7 +44,8 @@ public class ParkingLotSystem {
         if (parkedVehicleDetails.getVehicle() == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
         if (isPark(parkedVehicleDetails.getVehicle()))
-            throw new ParkingLotException("Duplicate Entry Not Allowed", ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
+            throw new ParkingLotException("Duplicate Entry Not Allowed",
+                    ParkingLotException.ExceptionType.DUPLICATE_ENTRY);
         if (checkAvailableSlot()) {
             systemObservers.forEach(IParkingLotSystemObserver::capacityIsFull);
             throw new ParkingLotException("Parking Space Full", ParkingLotException.ExceptionType.LOT_SIZE_FULL);
@@ -215,7 +216,8 @@ public class ParkingLotSystem {
         for (ParkingLot parkingLot : parkingLot) {
             lot++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingSlots.entrySet()) {
-                if (entry.getValue() != null && lot == findLot && entry.getValue().getVehicleDetails().getDriverCategory().equals(driverCategory)) {
+                if (entry.getValue() != null && lot == findLot &&
+                        entry.getValue().getVehicleDetails().getDriverCategory().equals(driverCategory)) {
                     int slot = entry.getKey();
                     String location = "Lot :" + lot + "," + "Slot :" + slot;
                     allHandicappedDriverVehicleLocation.add(location);
