@@ -9,6 +9,7 @@ import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.SlotDetails;
 import com.bridgelabz.parkinglot.observer.IParkingLotSystemObserver;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,7 +41,7 @@ public class ParkingLot {
     public void park(ParkedVehicleDetails parkedVehicleDetails, String attendantName) throws ParkingLotException {
         if (parkedVehicleDetails == null)
             throw new ParkingLotException("Null Entry Not Allowed", ParkingLotException.ExceptionType.NULL_VALUE);
-        Object NOT_ALLOWED = 0;
+        Integer NOT_ALLOWED = 0;
         if (parkedVehicleDetails.getVehicle() == NOT_ALLOWED)
             throw new ParkingLotException("Zero Entry Not Allowed", ParkingLotException.ExceptionType.ZERO_VALUE);
         if (isPark(parkedVehicleDetails.getVehicle()))
@@ -59,14 +60,18 @@ public class ParkingLot {
     public ParkingSlot getLot(ParkedVehicleDetails parkedVehicleDetails) {
         if (parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
                 parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) {
-            List<ParkingSlot> parkingSlotList = new ArrayList<>(parkingSlot);
-            parkingSlotList.sort(Comparator.comparing(ParkingSlot::getTotalNumberOfVehicleParked));
-            return parkingSlotList.get(0);
+            return getSpaceAsPerEvenlyDistribution(parkingSlot);
         }
         if (parkedVehicleDetails.getDriverCategory() == DriverCategory.HANDICAPPED &&
                 parkedVehicleDetails.getVehicleSize() == VehicleSize.SMALL) return getNearestFreeSpace(parkingSlot);
         return parkedVehicleDetails.getDriverCategory() == DriverCategory.NORMAL &&
                 parkedVehicleDetails.getVehicleSize() == VehicleSize.LARGE ? getSlotForLargeVehicle(parkingSlot) : null;
+    }
+
+    private ParkingSlot getSpaceAsPerEvenlyDistribution(List<ParkingSlot> parkingSlot) {
+        List<ParkingSlot> parkingSlotList = new ArrayList<>(parkingSlot);
+        parkingSlotList.sort(Comparator.comparing(ParkingSlot::getTotalNumberOfVehicleParked));
+        return parkingSlotList.get(0);
     }
 
     public int getSlot(ParkingSlot parkingSlot) {
@@ -89,8 +94,8 @@ public class ParkingLot {
         throw new ParkingLotException("Not Given Any Input", ParkingLotException.ExceptionType.ENTER_INPUT);
     }
 
-    public boolean unPark(Object vehicle) {
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+    public boolean unPark(Integer vehicle) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                     Integer key = entry.getKey();
@@ -103,8 +108,8 @@ public class ParkingLot {
         return false;
     }
 
-    public LocalDateTime getParkingTime(Object vehicle) {
-        for (ParkingSlot parkingSlot : this.parkingSlot)
+    public LocalDateTime getParkingTime(Integer vehicle) {
+        for (ParkingSlot parkingSlot : parkingSlot)
             for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
                     Integer key = entry.getKey();
@@ -116,7 +121,7 @@ public class ParkingLot {
 
     public String getVehicleLocation(Object vehicle) {
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getVehicle().equals(vehicle)) {
@@ -142,15 +147,14 @@ public class ParkingLot {
     public List<String> findLocationOfWhiteVehicle(VehicleColor color) {
         ArrayList<String> allWhiteVehicleLocation = new ArrayList<>();
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
-            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
+            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet())
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getColor().equals(color)) {
                     int slot = entry.getKey();
                     String location = "Lot :" + lot + "," + "Slot :" + slot;
                     allWhiteVehicleLocation.add(location);
                 }
-            }
         }
         return allWhiteVehicleLocation;
     }
@@ -159,7 +163,7 @@ public class ParkingLot {
                                                         VehicleManufacturerName vehicleManufacturerName) {
         List<String> allBlueToyotaVehicleLocation = new ArrayList<>();
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getColor().equals(color) &&
@@ -179,7 +183,7 @@ public class ParkingLot {
     public List<String> findLocationOfBmwVehicle(VehicleManufacturerName vehicleManufacturerName) {
         List<String> allBmwVehicleLocation = new ArrayList<>();
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getVehicleDetails().getVehicleManufacturerName()
@@ -196,16 +200,15 @@ public class ParkingLot {
     public List<String> findLocationOfVehicleWhichParkedInLastThirtyMinutes(int minutes) {
         List<String> allVehicleLocationWhichParkedInLastThirtyMinute = new ArrayList<>();
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
-            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
-                if (entry.getValue() != null && entry.getValue().getTime().getMinute() < LocalDateTime.now()
-                        .withMinute(minutes).getMinute()) {
+            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet())
+                if (entry.getValue() != null
+                        && Duration.between(entry.getValue().getTime(), LocalDateTime.now()).toMinutes() <= minutes) {
                     int slot = entry.getKey();
                     String location = "Lot :" + lot + "," + "Slot :" + slot;
                     allVehicleLocationWhichParkedInLastThirtyMinute.add(location);
                 }
-            }
         }
         return allVehicleLocationWhichParkedInLastThirtyMinute;
     }
@@ -213,16 +216,15 @@ public class ParkingLot {
     public List<String> findLocationOfVehicleWhichParkedInSpecificLot(DriverCategory driverCategory, int findLot) {
         List<String> allHandicappedDriverVehicleLocation = new ArrayList<>();
         int lot = 0;
-        for (ParkingSlot parkingSlot : this.parkingSlot) {
+        for (ParkingSlot parkingSlot : parkingSlot) {
             lot++;
-            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet()) {
+            for (Map.Entry<Integer, SlotDetails> entry : parkingSlot.parkingSlots.entrySet())
                 if (entry.getValue() != null && lot == findLot &&
                         entry.getValue().getVehicleDetails().getDriverCategory().equals(driverCategory)) {
                     int slot = entry.getKey();
                     String location = "Lot :" + lot + "," + "Slot :" + slot;
                     allHandicappedDriverVehicleLocation.add(location);
                 }
-            }
         }
         return allHandicappedDriverVehicleLocation;
     }

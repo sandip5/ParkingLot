@@ -21,8 +21,7 @@ public class ParkingSlot {
     }
 
     public int getTotalNumberOfVehicleParked() {
-        int totalNumberOfParkedVehicles = (int) IntStream.rangeClosed(1, parkingSlots.size())
+        return (int) IntStream.rangeClosed(1, parkingSlots.size())
                 .filter(i -> parkingSlots.get(i) != null).count();
-        return totalNumberOfParkedVehicles;
     }
 }

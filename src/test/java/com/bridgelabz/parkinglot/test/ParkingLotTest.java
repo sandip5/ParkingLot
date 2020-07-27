@@ -95,10 +95,14 @@ public class ParkingLotTest {
         try {
             ParkingLot parkingLot = new ParkingLot(2, 3);
             parkingLot.registerListener(parkingLotOwner);
-            parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL), "Ashish");
-            parkingLot.park(new ParkedVehicleDetails(12, DriverCategory.NORMAL, VehicleSize.SMALL), "Ashish");
-            parkingLot.park(new ParkedVehicleDetails(13, DriverCategory.NORMAL, VehicleSize.SMALL), "Ashish");
-            parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL), "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(11, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(12, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(13, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
+            parkingLot.park(new ParkedVehicleDetails(14, DriverCategory.NORMAL, VehicleSize.SMALL),
+                    "Ashish");
         } catch (ParkingLotException e) {
             Assert.assertTrue(parkingLotOwner.isFullCapacity());
             System.out.println(e.getMessage());
