@@ -230,7 +230,6 @@ public class ParkingLotSystem {
             counter++;
             for (Map.Entry<Integer, SlotDetails> entry : parkingLot.parkingLotMap.entrySet()) {
                 if (entry.getValue() != null) {
-//                    if (entry.getValue().getTime().getMinute() < LocalDateTime.now().withMinute(minutes).getMinute()) {
                     if (Duration.between(entry.getValue().getTime(),
                             LocalDateTime.now()).toMinutes() <= minutes) {
                         Integer key = entry.getKey();
