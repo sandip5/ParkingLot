@@ -141,7 +141,7 @@ public class ParkingLot {
                 .stream().anyMatch(entry -> entry.getValue() == null)).findFirst().orElse(null);
     }
 
-    public List<String> findLocationOfWhiteVehicle(VehicleColor color) {
+    public List<String> findLocationOfVehicleAsPerColor(VehicleColor color) {
         ArrayList<String> allWhiteVehicleLocation = new ArrayList<>();
         int lot = 0;
         for (ParkingSlot parkingSlot : parkingLotList) {
@@ -156,8 +156,8 @@ public class ParkingLot {
         return allWhiteVehicleLocation;
     }
 
-    public List<String> findLocationOfBlueToyotaVehicle(VehicleColor color,
-                                                        VehicleManufacturerName vehicleManufacturerName) {
+    public List<String> findLocationOfVehicleAsPerColorAndCompanyName(VehicleColor color,
+                                                                      VehicleManufacturerName vehicleManufacturerName) {
         List<String> allBlueToyotaVehicleLocation = new ArrayList<>();
         int lot = 0;
         for (ParkingSlot parkingSlot : parkingLotList) {
@@ -176,7 +176,7 @@ public class ParkingLot {
         return allBlueToyotaVehicleLocation;
     }
 
-    public List<String> findLocationOfBmwVehicle(VehicleManufacturerName vehicleManufacturerName) {
+    public List<String> findLocationOfVehicleAsPerCompanyName(VehicleManufacturerName vehicleManufacturerName) {
         List<String> allBmwVehicleLocation = new ArrayList<>();
         int lot = 0;
         for (ParkingSlot parkingSlot : parkingLotList) {
@@ -208,7 +208,7 @@ public class ParkingLot {
         return allVehicleLocationWhichParkedInLastThirtyMinute;
     }
 
-    public List<String> findLocationOfVehicleWhichParkedInSpecificLot(DriverCategory driverCategory, int findLot) {
+    public List<String> findLocationOfVehicleAsPerLot(DriverCategory driverCategory, int findLot) {
         List<String> allHandicappedDriverVehicleLocation = new ArrayList<>();
         int lot = 0;
         for (ParkingSlot parkingSlot : parkingLotList) {
