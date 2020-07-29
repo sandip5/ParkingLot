@@ -1,7 +1,5 @@
 package com.bridgelabz.parkinglot.model;
 
-import com.bridgelabz.parkinglot.model.SlotDetails;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.IntStream;

@@ -457,7 +457,7 @@ public class ParkingLotTest {
                     VehicleColor.BLUE, VehicleManufacturerName.BMW), "Moon");
             parkingLot.park(new ParkedVehicleDetails(4, DriverCategory.NORMAL, VehicleSize.SMALL,
                     VehicleColor.BLUE, VehicleManufacturerName.TOYOTA), "Sky");
-            List<String> locationOfVehicleWhichParkedAsPerLastTime = parkingLot.findLocationOfVehicleWhichParkedInLastThirtyMinutes(30);
+            List<String> locationOfVehicleWhichParkedAsPerLastTime = parkingLot.findLocationOfVehicleAsPerTime(30);
             List<String> expected = Arrays.asList("Lot :1,Slot :1", "Lot :1,Slot :2", "Lot :2,Slot :1", "Lot :3,Slot :1");
             Assert.assertEquals(expected, locationOfVehicleWhichParkedAsPerLastTime);
         } catch (ParkingLotException e) {
@@ -487,7 +487,7 @@ public class ParkingLotTest {
             parkingLot.park(new ParkedVehicleDetails(9, DriverCategory.HANDICAPPED, VehicleSize.SMALL,
                     VehicleColor.WHITE, VehicleManufacturerName.TOYOTA), "Sun");
             List<String> locationOfVehicleWhichParkedInSpecificLot = parkingLot.
-                    findLocationOfVehicleAsPerLot(DriverCategory.HANDICAPPED, 2);
+                    findLocationOfVehicleAsPerLotAndDriverCategory(DriverCategory.HANDICAPPED, 2);
             List<String> expected = Collections.singletonList("Lot :2,Slot :3");
             Assert.assertEquals(expected, locationOfVehicleWhichParkedInSpecificLot);
         } catch (ParkingLotException e) {

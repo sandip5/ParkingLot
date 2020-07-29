@@ -6,36 +6,36 @@ import com.bridgelabz.parkinglot.enums.VehicleManufacturerName;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 
 public class ParkedVehicleDetails {
-    private final Object vehicle;
+    private final Object plateNumber;
     private final DriverCategory driverCategory;
     private final VehicleSize vehicleSize;
     private VehicleManufacturerName vehicleManufacturerName;
     private VehicleColor color;
 
-    public ParkedVehicleDetails(Object vehicle, DriverCategory driverCategory, VehicleSize vehicleSize) {
-        this.vehicle = vehicle;
+    public ParkedVehicleDetails(Object plateNumber, DriverCategory driverCategory, VehicleSize vehicleSize) {
+        this.plateNumber = plateNumber;
         this.driverCategory = driverCategory;
         this.vehicleSize = vehicleSize;
     }
 
-    public ParkedVehicleDetails(Object vehicle, DriverCategory driverCategory, VehicleSize vehicleSize, VehicleColor color) {
-        this.vehicle = vehicle;
+    public ParkedVehicleDetails(Object plateNumber, DriverCategory driverCategory, VehicleSize vehicleSize, VehicleColor color) {
+        this.plateNumber = plateNumber;
         this.driverCategory = driverCategory;
         this.vehicleSize = vehicleSize;
         this.color = color;
     }
 
-    public ParkedVehicleDetails(Object vehicle, DriverCategory driverCategory, VehicleSize vehicleSize,
+    public ParkedVehicleDetails(Object plateNumber, DriverCategory driverCategory, VehicleSize vehicleSize,
                                 VehicleColor color, VehicleManufacturerName vehicleManufacturerName) {
-        this.vehicle = vehicle;
+        this.plateNumber = plateNumber;
         this.driverCategory = driverCategory;
         this.vehicleSize = vehicleSize;
         this.color = color;
         this.vehicleManufacturerName = vehicleManufacturerName;
     }
 
-    public Object getVehicle() {
-        return vehicle;
+    public Object getPlateNumber() {
+        return plateNumber;
     }
 
     public DriverCategory getDriverCategory() {
